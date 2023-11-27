@@ -3131,9 +3131,8 @@ GameObject:
   m_Component:
   - component: {fileID: 909853853}
   - component: {fileID: 909853852}
-  - component: {fileID: 909853857}
   - component: {fileID: 909853855}
-  - component: {fileID: 909853859}
+  - component: {fileID: 909853857}
   m_Layer: 0
   m_Name: Floor
   m_TagString: Floor
@@ -3199,24 +3198,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c2f2632aacbb0e45ae24bd352125af1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &909853859
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 909853851}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2779f446dd9afcd4f98553d7a933424c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  roomTransforms: []
-  groundTilemap: {fileID: 1046439828}
-  wallTilemap: {fileID: 126805968}
-  groundTile: {fileID: 11400000, guid: 9a286adeada1a5a4a88a8867ba9dbddd, type: 2}
-  wallRuleTile: {fileID: 11400000, guid: 368b88f2fdaf477469123cfcb48ab7f8, type: 2}
-  desiredSprite: {fileID: -1456229600, guid: 72ed69f4935ff6846a5799338844ace1, type: 3}
 --- !u!1 &967773743
 GameObject:
   m_ObjectHideFlags: 2

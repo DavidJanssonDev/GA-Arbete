@@ -26,14 +26,20 @@ public class CopyTileMapToMain : MonoBehaviour {
         ImportRooms();
     }
 
-    private void Start() {
+    private void Start()
+    {
         ImportTileMaps();
+        CopyTileMap();
+    }
+    public void CopyTileMap() {
         CopyTilesToMain(WallTilemaps, MainWallTilemap);
         CopyTilesToMain(GroundTilemaps, MainGroundTilemap);
         DisableRoomTiles(ValueScript.RoomGameObjects);
     }
 
-    private void ImportRooms() {
+   
+
+    public void ImportRooms() {
         for (int Childindex = 0; Childindex < transform.childCount; Childindex++) {
 
             Transform gameChild = transform.GetChild(Childindex);
