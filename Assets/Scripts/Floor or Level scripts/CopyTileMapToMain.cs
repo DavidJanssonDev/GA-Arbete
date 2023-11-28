@@ -1,15 +1,14 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using System.Linq;
 
-public class CopyTileMapToMain : MonoBehaviour {
+public class CopyTileMapToMain : MonoBehaviour
+{
+    private FloorValueScript valueScript;
 
-    private FloorValueScript ValueScript;
-
-    private List<Tilemap> WallTilemaps = new();
-    private List<Tilemap> GroundTilemaps = new();
+    private List<Tilemap> wallTilemaps = new List<Tilemap>();
+    private List<Tilemap> groundTilemaps = new List<Tilemap>();
 
     private const string WallTilemapTag = "Wall tilemap";
     private const string GroundTilemapTag = "Ground tilemap";
@@ -17,115 +16,115 @@ public class CopyTileMapToMain : MonoBehaviour {
     private const string MainWallTilemapTag = "Main wall tilemap";
     private const string MainGroundTilemapTag = "Main ground tilemap";
 
+    private Transform mainGroundTilemap;
+    private Transform mainWallTilemap;
 
-    private Transform MainGroundTilemap;
-    private Transform MainWallTilemap;
-
-    private void Awake() {
-        ValueScript = GetComponent<FloorValueScript>();
+    private void Awake()
+    {
+        valueScript = GetComponent<FloorValueScript>();
     }
 
-    public void CopyTileMap() {
-        CopyTilesToTilemap(WallTilemaps, MainWallTilemap);
-        CopyTilesToTilemap(GroundTilemaps, MainGroundTilemap);
-        // DisableRoomTiles(ValueScript.RoomGameObjects);
+    public void CopyTileMap()
+    {
+        CopyTilesToTilemap(wallTilemaps, mainWallTilemap);
+        CopyTilesToTilemap(groundTilemaps, mainGroundTilemap);
+        // DisableRoomTiles(valueScript.RoomGameObjects);
     }
 
-   
+    public void ImportRooms()
+    {
+        for (int childIndex = 0; childIndex < transform.childCount; childIndex++)
+        {
+            Transform gameChild = transform.GetChild(childIndex);
 
-    public void ImportRooms() {
-        for (int Childindex = 0; Childindex < transform.childCount; Childindex++) {
-
-            Transform gameChild = transform.GetChild(Childindex);
-            
-            if (gameChild.CompareTag("Room")) {
-
-                ValueScript.RoomGameObjects.Add(gameChild);
-
-            } else if (gameChild.CompareTag(MainWallTilemapTag)) {
-                
-                MainWallTilemap = gameChild;
-                
-            } else if (gameChild.CompareTag(MainGroundTilemapTag)) {
-                
-                MainGroundTilemap = gameChild;
-            
+            if (gameChild.CompareTag("Room"))
+            {
+                valueScript.RoomGameObjects.Add(gameChild);
+            }
+            else if (gameChild.CompareTag(MainWallTilemapTag))
+            {
+                mainWallTilemap = gameChild;
+            }
+            else if (gameChild.CompareTag(MainGroundTilemapTag))
+            {
+                mainGroundTilemap = gameChild;
             }
         }
     }
 
-    public void SortTileMapsInRoom() {
-        
-        List<Transform> tilemaps = new();
+    public void SortTileMapsInRoom()
+    {
+        foreach (var room in valueScript.RoomGameObjects)
+        {
+            var roomScript = room.GetComponent<roomInfoScript>();
+            roomScript.GetChildrenInRoom();
 
+            foreach (var childTilemap in roomScript.roomChildren)
+            {
+                var tilemapComponent = childTilemap.GetComponent<Tilemap>();
 
-        // Get the Room Objects childrens
-        foreach (var room in ValueScript.RoomGameObjects) {
-
-            roomInfoScript roomScript = room.GetComponent<roomInfoScript>();
-;            roomScript.GetChildrenInRoom();
-
-            foreach (var ChildTilemap in roomScript.roomChildren) {
-            
-                Tilemap tilemapComponent = ChildTilemap.GetComponent<Tilemap>();
-
-                if (ChildTilemap.CompareTag(WallTilemapTag)) {
-                    WallTilemaps.Add(tilemapComponent);
-                } else if (ChildTilemap.CompareTag(GroundTilemapTag)) {
-                    GroundTilemaps.Add(tilemapComponent);
+                if (childTilemap.CompareTag(WallTilemapTag))
+                {
+                    wallTilemaps.Add(tilemapComponent);
+                }
+                else if (childTilemap.CompareTag(GroundTilemapTag))
+                {
+                    groundTilemaps.Add(tilemapComponent);
                 }
             }
-
         }
     }
 
-    public Vector3Int CombineTileAndTilemapPos(Vector3Int tile_pos, Vector3 tilemap_pos ) {
-        int xResult = Mathf.FloorToInt(tilemap_pos.x) + tile_pos.x;
-        int yResult = Mathf.FloorToInt(tilemap_pos.y) + tile_pos.y;
-        int zResult = Mathf.FloorToInt(tilemap_pos.z) + tile_pos.z;
-
-        return new Vector3Int(xResult, yResult, zResult);
-
+    public Vector3Int CombineTileAndTilemapPos(Vector3Int tilePos, Vector3 tilemapPos)
+    {
+        return new Vector3Int(
+            Mathf.FloorToInt(tilemapPos.x) + tilePos.x,
+            Mathf.FloorToInt(tilemapPos.y) + tilePos.y,
+            Mathf.FloorToInt(tilemapPos.z) + tilePos.z
+        );
     }
 
-    public void CopyTilesToTilemap(List<Tilemap> tilemap, Transform mainTilemapObject) {
+    public void CopyTilesToTilemap(List<Tilemap> tilemaps, Transform mainTilemapObject)
+    {
+        if (mainTilemapObject?.TryGetComponent(out Tilemap mainTilemap) == true) {
+         
         
 
-        if (mainTilemapObject.TryGetComponent<Tilemap>(out var mainTilmap)) {
+            foreach (var tilemapObject in tilemaps) {
 
-            foreach (var tilemapObject in tilemap) {
-                Vector3 tilemapPos = tilemapObject.transform.position;
-                BoundsInt bounds = tilemapObject.cellBounds;
+                var tilemapPos = tilemapObject.transform.position;
+                var bounds = tilemapObject.cellBounds;
 
-
-                for (int TileX = bounds.x; TileX < bounds.x + bounds.size.x; TileX++) {
-                    for ( int TileY = bounds.y; TileY < bounds.y + bounds.size.y; TileY++) {
-
-                        Vector3Int cellPosition = new(TileX, TileY,0);
-                        TileBase sourceTile = tilemapObject.GetTile(cellPosition);
+                for (int tileX = bounds.x; tileX < bounds.x + bounds.size.x; tileX++) {
+                    for (int tileY = bounds.y; tileY < bounds.y + bounds.size.y; tileY++) {
+                        
+                        
+                        var cellPosition = new Vector3Int(tileX, tileY, 0);
+                        var sourceTile = tilemapObject.GetTile(cellPosition);
 
                         if (sourceTile != null) {
-                            mainTilmap.SetTile(CombineTileAndTilemapPos(cellPosition, tilemapPos), sourceTile);
-                        }
 
+                            mainTilemap.SetTile(CombineTileAndTilemapPos(cellPosition, tilemapPos), sourceTile);
+                        }
                     }
                 }
-            }  
+            }
         }
     }
 
-    public void DisableRoomTiles(List<Transform> Rooms) {
-        foreach (var room in Rooms) {
-            for (int ChildIndex = 0; ChildIndex < room.childCount; ChildIndex++) {
-                
-                GameObject childObject = room.GetChild(ChildIndex).gameObject;
+    public void DisableRoomTiles(List<Transform> rooms)
+    {
+        foreach (var room in rooms)
+        {
+            foreach (Transform child in room)
+            {
+                var childObject = child.gameObject;
 
-                if (childObject.CompareTag(WallTilemapTag) || childObject.CompareTag(GroundTilemapTag)) {
+                if (childObject.CompareTag(WallTilemapTag) || childObject.CompareTag(GroundTilemapTag))
+                {
                     childObject.SetActive(false);
-                } 
-            
+                }
             }
         }
-    
     }
 }

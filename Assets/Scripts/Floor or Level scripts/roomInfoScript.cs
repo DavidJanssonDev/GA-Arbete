@@ -5,19 +5,7 @@ using UnityEngine;
 public class roomInfoScript : MonoBehaviour {
 
     public List<Transform> roomChildren = new();
-   
-
-    private FloorValueScript FloorValueScript;
-
-    private void Awake() {
-        FloorValueScript = GameObject.FindGameObjectWithTag("Floor").GetComponent<FloorValueScript>();
-    }
-
-    
-    private void Start()
-    {
-        GetChildrenInRoom();
-    }
+    public List<Dictionary<string, Vector3>> doorPostion = new();
 
     public void GetChildrenInRoom()
     {
@@ -32,11 +20,7 @@ public class roomInfoScript : MonoBehaviour {
     }
 
 
-    public void FindClosestRooms() {
-       
 
-
-    }
 
 
 
