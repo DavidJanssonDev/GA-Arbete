@@ -23,18 +23,12 @@ public class CopyTileMapToMain : MonoBehaviour {
 
     private void Awake() {
         ValueScript = GetComponent<FloorValueScript>();
-        ImportRooms();
     }
 
-    private void Start()
-    {
-        ImportTileMaps();
-        CopyTileMap();
-    }
     public void CopyTileMap() {
-        CopyTilesToMain(WallTilemaps, MainWallTilemap);
-        CopyTilesToMain(GroundTilemaps, MainGroundTilemap);
-        DisableRoomTiles(ValueScript.RoomGameObjects);
+        CopyTilesToTilemap(WallTilemaps, MainWallTilemap);
+        CopyTilesToTilemap(GroundTilemaps, MainGroundTilemap);
+        // DisableRoomTiles(ValueScript.RoomGameObjects);
     }
 
    
@@ -60,33 +54,32 @@ public class CopyTileMapToMain : MonoBehaviour {
         }
     }
 
-    private void ImportTileMaps() {
+    public void SortTileMapsInRoom() {
         
         List<Transform> tilemaps = new();
 
+
         // Get the Room Objects childrens
         foreach (var room in ValueScript.RoomGameObjects) {
-            foreach (Transform childTransform in room) {
-                tilemaps.Add(childTransform);
-            }
-        }
 
-        foreach (var tilemapObject in tilemaps) {
-            if (tilemapObject != null) {
-                Tilemap tilemapComponent = tilemapObject.GetComponent<Tilemap>();
-                
-                if (tilemapObject.CompareTag(WallTilemapTag)) {
+            roomInfoScript roomScript = room.GetComponent<roomInfoScript>();
+;            roomScript.GetChildrenInRoom();
+
+            foreach (var ChildTilemap in roomScript.roomChildren) {
+            
+                Tilemap tilemapComponent = ChildTilemap.GetComponent<Tilemap>();
+
+                if (ChildTilemap.CompareTag(WallTilemapTag)) {
                     WallTilemaps.Add(tilemapComponent);
-                } 
-                
-                else if (tilemapObject.CompareTag(GroundTilemapTag)) {
+                } else if (ChildTilemap.CompareTag(GroundTilemapTag)) {
                     GroundTilemaps.Add(tilemapComponent);
                 }
             }
+
         }
     }
 
-    private Vector3Int CombineTileAndTilemapPos(Vector3Int tile_pos, Vector3 tilemap_pos ) {
+    public Vector3Int CombineTileAndTilemapPos(Vector3Int tile_pos, Vector3 tilemap_pos ) {
         int xResult = Mathf.FloorToInt(tilemap_pos.x) + tile_pos.x;
         int yResult = Mathf.FloorToInt(tilemap_pos.y) + tile_pos.y;
         int zResult = Mathf.FloorToInt(tilemap_pos.z) + tile_pos.z;
@@ -95,7 +88,7 @@ public class CopyTileMapToMain : MonoBehaviour {
 
     }
 
-    private void CopyTilesToMain(List<Tilemap> tilemap, Transform mainTilemapObject) {
+    public void CopyTilesToTilemap(List<Tilemap> tilemap, Transform mainTilemapObject) {
         
 
         if (mainTilemapObject.TryGetComponent<Tilemap>(out var mainTilmap)) {
@@ -121,7 +114,7 @@ public class CopyTileMapToMain : MonoBehaviour {
         }
     }
 
-    private void DisableRoomTiles(List<Transform> Rooms) {
+    public void DisableRoomTiles(List<Transform> Rooms) {
         foreach (var room in Rooms) {
             for (int ChildIndex = 0; ChildIndex < room.childCount; ChildIndex++) {
                 

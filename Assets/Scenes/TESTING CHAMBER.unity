@@ -153,7 +153,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 494830436}
   - {fileID: 1704634661}
   - {fileID: 1343085337}
   m_Father: {fileID: 909853853}
@@ -170,6 +169,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16456b5a84bfe6f44a8852750768d8a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  roomChildren: []
 --- !u!1 &126805965
 GameObject:
   m_ObjectHideFlags: 0
@@ -438,37 +438,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!1 &230183000
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 230183001}
-  m_Layer: 0
-  m_Name: Room Node Object 1
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &230183001
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 230183000}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1738791585}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &269959390
 GameObject:
   m_ObjectHideFlags: 0
@@ -481,7 +450,7 @@ GameObject:
   - component: {fileID: 269959393}
   - component: {fileID: 269959392}
   m_Layer: 0
-  m_Name: 'Ground Room 1 '
+  m_Name: Ground Room
   m_TagString: Ground tilemap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2105,37 +2074,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!1 &494830435
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 494830436}
-  m_Layer: 0
-  m_Name: Room Node Object 1
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &494830436
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 494830435}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 23261327}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -2275,7 +2213,7 @@ GameObject:
   - component: {fileID: 737948531}
   - component: {fileID: 737948530}
   m_Layer: 0
-  m_Name: 'Wall Room 1 '
+  m_Name: Wall Room
   m_TagString: Wall tilemap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3133,6 +3071,7 @@ GameObject:
   - component: {fileID: 909853852}
   - component: {fileID: 909853855}
   - component: {fileID: 909853857}
+  - component: {fileID: 909853858}
   m_Layer: 0
   m_Name: Floor
   m_TagString: Floor
@@ -3196,6 +3135,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3c2f2632aacbb0e45ae24bd352125af1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &909853858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 909853851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 573fbff46c2dfb648a4c1c7252b9639e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &967773743
@@ -3512,7 +3463,7 @@ GameObject:
   - component: {fileID: 1343085339}
   - component: {fileID: 1343085338}
   m_Layer: 0
-  m_Name: 'Wall Room 1 '
+  m_Name: Wall Room
   m_TagString: Wall tilemap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4746,7 +4697,7 @@ GameObject:
   - component: {fileID: 1704634663}
   - component: {fileID: 1704634662}
   m_Layer: 0
-  m_Name: 'Ground Room 1 '
+  m_Name: Ground Room
   m_TagString: Ground tilemap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6400,7 +6351,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 230183001}
   - {fileID: 269959391}
   - {fileID: 737948529}
   m_Father: {fileID: 909853853}
@@ -6417,6 +6367,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16456b5a84bfe6f44a8852750768d8a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  roomChildren: []
 --- !u!1 &1890627926
 GameObject:
   m_ObjectHideFlags: 2
