@@ -170,6 +170,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomChildren: []
+  roomLengthToOtherRoom: []
+  roomDoorPos: []
+  roomDoorAvailebole: 0
+  doorTargetTile: {fileID: 11400000, guid: c6139a7af1ebfce4da96a748798b45f5, type: 2}
 --- !u!1 &126805965
 GameObject:
   m_ObjectHideFlags: 0
@@ -3069,9 +3073,9 @@ GameObject:
   m_Component:
   - component: {fileID: 909853853}
   - component: {fileID: 909853852}
+  - component: {fileID: 909853858}
   - component: {fileID: 909853855}
   - component: {fileID: 909853857}
-  - component: {fileID: 909853858}
   m_Layer: 0
   m_Name: Floor
   m_TagString: Floor
@@ -6368,6 +6372,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomChildren: []
+  roomLengthToOtherRoom: []
+  roomDoorPos: []
+  roomDoorAvailebole: 0
+  doorTargetTile: {fileID: 11400000, guid: c6139a7af1ebfce4da96a748798b45f5, type: 2}
 --- !u!1 &1890627926
 GameObject:
   m_ObjectHideFlags: 2

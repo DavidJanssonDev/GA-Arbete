@@ -16,7 +16,19 @@ public class FloorGeneration : MonoBehaviour {
 
     private void Start() {
         _TileCopyScript.ImportRooms();
-        _TileCopyScript.SortTileMapsInRoom();
-        _TileCopyScript.CopyTileMap();
+        roomGeneration();
+
+
+
+
+    }
+
+    private void roomGeneration() {
+        List<Transform> roomList = _FloorValueScript.RoomGameObjects;
+        for (var roomIndex = 0; roomIndex < roomList.Count; roomIndex++) {
+            roomInfoScript roomScript = roomList[roomIndex].GetComponent<roomInfoScript>();
+            roomScript.roomStartUp();
+            roomScript.GetClosestRooms(_FloorValueScript.RoomGameObjects);
+        }
     }
 }
