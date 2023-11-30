@@ -6,11 +6,14 @@ using UnityEngine.Tilemaps;
 
 public class roomInfoScript : MonoBehaviour {
 
-    public List<Transform> roomChildren = new();
+    private FloorGeneration floorGeneration;
+
+    // THE LIST WITH THE CLOSEST ROOM ARE STORED
+    public List<Dictionary<string, Transform>> closestRoomList = new();
 
     public List<float> roomLengthToOtherRoom = new(); // The index is the index of the room list
 
-    public List<Dictionary<string, Transform>> closestRoomList = new();
+    public List<Transform> roomChildren = new();
     
     public List<Vector3> roomDoorPos = new();
 
@@ -20,12 +23,15 @@ public class roomInfoScript : MonoBehaviour {
 
     [SerializeField] private TileBase doorTargetTile;
 
+    private void Awake()
+    {
+        floorGeneration = GetComponent<FloorGeneration>();
+    }
 
     public void roomStartUp() {
         GetChildrenInRoom();
         GetGroundTileMap();
         GetDoorTiles();
-        
     }
 
     public void GetChildrenInRoom()
@@ -70,8 +76,10 @@ public class roomInfoScript : MonoBehaviour {
         Transform closestRoom = null;
 
         foreach (var room in roomList) {
-            
-            
+
+            Debug.Log($"CURRENT ROOM THAT ARE SEARCHING {transform.name}, THE ROOM THE ARE SEACHED IS {room.name}");
+           
+            Debug.Log($"SEARCH FOR {room.name} IS DONE");  
         }
 
 

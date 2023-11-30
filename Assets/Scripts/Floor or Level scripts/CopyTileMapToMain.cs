@@ -27,7 +27,7 @@ public class CopyTileMapToMain : MonoBehaviour
         SortTileMapsInRoom();
         CopyTilesToTilemap(wallTilemaps, mainWallTilemap);
         CopyTilesToTilemap(groundTilemaps, mainGroundTilemap);
-        // DisableRoomTiles(valueScript.RoomGameObjects);
+        DisableRoomTiles(valueScript.RoomGameObjects);
     }
 
     public void ImportRooms()
