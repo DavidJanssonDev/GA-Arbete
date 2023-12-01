@@ -1,25 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class FloorGeneration : MonoBehaviour {
 
-    private FloorValueScript _FloorValueScript;
-    private CopyTileMapToMain _TileCopyScript;
+    private FloorValueScript floorValueScript;
+    private CopyTileMapToMain tileCopyScript;
+
+    private Transform MainWallTilemap;
+    private Transform MainGroundTilemap;
 
 
-    private void Awake()
-    {
-        _FloorValueScript = GetComponent<FloorValueScript>();
-        _TileCopyScript = GetComponent<CopyTileMapToMain>();
+
+    private void Awake() {
+
+
+        floorValueScript = GetComponent<FloorValueScript>();
+        tileCopyScript = GetComponent<CopyTileMapToMain>();
     }
 
     private void Start() {
 
-        _TileCopyScript.ImportRooms(); // Takes in the Rooms and seperates them
+        tileCopyScript.ImportRooms(MainGroundTilemap, MainWallTilemap); // Takes in the Rooms and seperates them
         
-        foreach (var room in _FloorValueScript.RoomList) {
-            Debug.Log(room.roomTransform.position);
+        // Goes throw each room 
+        foreach (var room in floorValueScript.RoomList) {
+            room.CopyTileMap()
         }
         
 
@@ -53,19 +61,81 @@ namespace RoomStuff
 
 
         public string Name;
-        public Transform roomTransform; //array [x,y]
+        public Transform RoomTransform; //array [x,y]
         public List<Vector3> DoorPos;
         public bool CanContainEnemies;
+        public List<Tilemap> Tilemaps;
+    
 
         // CUNSTRUCTOR
         public Room(string name, Transform transform, bool canContainEnemies){
             Name = name;
-            roomTransform = transform;
+            RoomTransform = transform;
             CanContainEnemies = canContainEnemies;
+            foreach (Transform child in transform) {
+
+                if (child.CompareTag("Wall tilemap")) {
+                    
+                   Tilemaps.Add(child.GetComponent<Tilemap>());
+
+                } else if (child.CompareTag("Ground tilemap")) {
+
+                   Tilemaps.Add(child.GetComponent<Tilemap>());
+
+                }
+            }
         }
 
         public float GetDistanceToRoom(Transform targetPoint) {
-            return Vector3.Distance(roomTransform.position, targetPoint.position);
+            return Vector3.Distance(RoomTransform.position, targetPoint.position);
         }
+        
+
+
+        public void CopyTileMap(List<Tilemap> Maintilemaps) {
+            foreach(var tilemap in  Maintilemaps)
+            {
+                switch (tilemap.transform.tag) {
+                    case "Main wall tilemap":
+                        CopysTileMapToTilemap(tilemap, tilemap);
+                        break;
+
+                    case "Main ground tilemap":
+                        CopysTileMapToTilemap(tilemap, tilemap);
+                        break;
+
+                }
+            }
+        }
+
+        private void CopysTileMapToTilemap(Tilemap tilemapToCopyTo, Tilemap orgTilemap) {
+
+            var tilemapPos = orgTilemap.transform.position;
+            var bounds = orgTilemap.cellBounds;
+
+            for (int tileX = bounds.x; tileX < bounds.x + bounds.size.x; tileX++)
+            {
+                for (int tileY = bounds.y; tileY < bounds.y + bounds.size.y; tileY++)
+                {
+
+
+                    var cellPosition = new Vector3Int(tileX, tileY, 0);
+                    var sourceTile = orgTilemap.GetTile(cellPosition);
+
+                    if (sourceTile != null)
+                    {
+
+                        tilemapToCopyTo.SetTile(
+                                new Vector3Int(
+                                    Mathf.FloorToInt(tilemapPos.x) + cellPosition.x,
+                                    Mathf.FloorToInt(tilemapPos.y) + cellPosition.y,
+                                    Mathf.FloorToInt(tilemapPos.z) + cellPosition.z),
+                                sourceTile);
+                    }
+                }
+            }
+        }
+
     }
+
 }

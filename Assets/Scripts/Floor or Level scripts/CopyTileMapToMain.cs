@@ -17,8 +17,6 @@ public class CopyTileMapToMain : MonoBehaviour
     private const string MainWallTilemapTag = "Main wall tilemap";
     private const string MainGroundTilemapTag = "Main ground tilemap";
 
-    private Transform mainGroundTilemap;
-    private Transform mainWallTilemap;
 
     private void Awake() { 
         valueScript = GetComponent<FloorValueScript>();
@@ -33,7 +31,7 @@ public class CopyTileMapToMain : MonoBehaviour
     }
 */
 
-    public void ImportRooms() {
+    public void ImportRooms(Transform groundTilemap, Transform wallTilemap) {
         
         for (int childIndex = 0; childIndex < transform.childCount; childIndex++) {
             Transform gameChild = transform.GetChild(childIndex);
@@ -43,11 +41,11 @@ public class CopyTileMapToMain : MonoBehaviour
                     break;
 
                 case MainWallTilemapTag:
-                    mainWallTilemap = gameChild;
+                    wallTilemap = gameChild;
                     break;
 
                 case MainGroundTilemapTag:
-                    mainGroundTilemap = gameChild;
+                    groundTilemap = gameChild;
                     break;
             }
         }
@@ -76,20 +74,10 @@ public class CopyTileMapToMain : MonoBehaviour
         }
     }
 
-    public Vector3Int CombineTileAndTilemapPos(Vector3Int tilePos, Vector3 tilemapPos)
-    {
-        return new Vector3Int(
-            Mathf.FloorToInt(tilemapPos.x) + tilePos.x,
-            Mathf.FloorToInt(tilemapPos.y) + tilePos.y,
-            Mathf.FloorToInt(tilemapPos.z) + tilePos.z
-        );
-    }
-
+    
     public void CopyTilesToTilemap(List<Tilemap> tilemaps, Transform mainTilemapObject)
     {
         if (mainTilemapObject?.TryGetComponent(out Tilemap mainTilemap) == true) {
-         
-        
 
             foreach (var tilemapObject in tilemaps) {
 
@@ -105,7 +93,12 @@ public class CopyTileMapToMain : MonoBehaviour
 
                         if (sourceTile != null) {
 
-                            mainTilemap.SetTile(CombineTileAndTilemapPos(cellPosition, tilemapPos), sourceTile);
+                            mainTilemap.SetTile(
+                                new Vector3Int(
+                                    Mathf.FloorToInt(tilemapPos.x) + cellPosition.x,
+                                    Mathf.FloorToInt(tilemapPos.y) + cellPosition.y,
+                                    Mathf.FloorToInt(tilemapPos.z) + cellPosition.z),
+                                sourceTile);
                         }
                     }
                 }
