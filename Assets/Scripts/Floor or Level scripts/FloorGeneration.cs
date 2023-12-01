@@ -4,6 +4,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+
+
 public class FloorGeneration : MonoBehaviour {
 
     private FloorValueScript floorValueScript;
@@ -23,11 +25,19 @@ public class FloorGeneration : MonoBehaviour {
 
     private void Start() {
 
-        tileCopyScript.ImportRooms(MainGroundTilemap, MainWallTilemap); // Takes in the Rooms and seperates them
+        List<Transform> TempMainMaps = tileCopyScript.ImportRooms(); // Takes in the Rooms and seperates them
+        foreach (var tilemap in TempMainMaps) {
+
+            if (tilemap.CompareTag("Main wall tilemap")){
+                MainWallTilemap = tilemap;
+            } else if (tilemap.CompareTag("Main ground tilemap")) {
+                MainGroundTilemap = tilemap;
+            }
+        }
         
         // Goes throw each room 
         foreach (var room in floorValueScript.RoomList) {
-            room.CopyTileMap()
+            room.CopyTileMap();
         }
         
 
@@ -57,7 +67,8 @@ public class FloorGeneration : MonoBehaviour {
 
 namespace RoomStuff
 {
-    public class Room {
+    public class Room
+    {
 
 
         public string Name;
@@ -65,37 +76,46 @@ namespace RoomStuff
         public List<Vector3> DoorPos;
         public bool CanContainEnemies;
         public List<Tilemap> Tilemaps;
-    
+
 
         // CUNSTRUCTOR
-        public Room(string name, Transform transform, bool canContainEnemies){
+        // CUNSTRUCTOR
+        public Room(string name, Transform transform, bool canContainEnemies)
+        {
             Name = name;
             RoomTransform = transform;
             CanContainEnemies = canContainEnemies;
-            foreach (Transform child in transform) {
 
-                if (child.CompareTag("Wall tilemap")) {
-                    
-                   Tilemaps.Add(child.GetComponent<Tilemap>());
+            // Initialize the Tilemaps list
+            Tilemaps = new();
 
-                } else if (child.CompareTag("Ground tilemap")) {
-
-                   Tilemaps.Add(child.GetComponent<Tilemap>());
-
+            foreach (Transform child in transform)
+            {
+                if (child.CompareTag("Wall tilemap"))
+                {
+                    Tilemaps.Add(child.GetComponent<Tilemap>());
+                }
+                else if (child.CompareTag("Ground tilemap"))
+                {
+                    Tilemaps.Add(child.GetComponent<Tilemap>());
                 }
             }
         }
 
-        public float GetDistanceToRoom(Transform targetPoint) {
+        public float GetDistanceToRoom(Transform targetPoint)
+        {
             return Vector3.Distance(RoomTransform.position, targetPoint.position);
         }
-        
 
 
-        public void CopyTileMap(List<Tilemap> Maintilemaps) {
-            foreach(var tilemap in  Maintilemaps)
+
+        public void CopyTileMap()
+        {
+            foreach (var tilemap in Tilemaps)
             {
-                switch (tilemap.transform.tag) {
+                Debug.Log(tilemap.transform.name);
+                switch (tilemap.transform.tag)
+                {
                     case "Main wall tilemap":
                         CopysTileMapToTilemap(tilemap, tilemap);
                         break;
@@ -108,7 +128,8 @@ namespace RoomStuff
             }
         }
 
-        private void CopysTileMapToTilemap(Tilemap tilemapToCopyTo, Tilemap orgTilemap) {
+        private void CopysTileMapToTilemap(Tilemap tilemapToCopyTo, Tilemap orgTilemap)
+        {
 
             var tilemapPos = orgTilemap.transform.position;
             var bounds = orgTilemap.cellBounds;
@@ -134,6 +155,7 @@ namespace RoomStuff
                     }
                 }
             }
+            Debug.Log("Done Copy tiles");
         }
 
     }

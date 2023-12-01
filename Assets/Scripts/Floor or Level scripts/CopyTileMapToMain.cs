@@ -22,17 +22,18 @@ public class CopyTileMapToMain : MonoBehaviour
         valueScript = GetComponent<FloorValueScript>();
         floorGeneration = GetComponent<FloorGeneration>();
     }
-/*
-    public void CopyTileMap() {
-        SortTileMapsInRoom();
-        CopyTilesToTilemap(wallTilemaps, mainWallTilemap);
-        CopyTilesToTilemap(groundTilemaps, mainGroundTilemap);
-        DisableRoomTiles(valueScript.RoomGameObjects);
-    }
-*/
+    /*
+        public void CopyTileMap() {
+            SortTileMapsInRoom();
+            CopyTilesToTilemap(wallTilemaps, mainWallTilemap);
+            CopyTilesToTilemap(groundTilemaps, mainGroundTilemap);
+            DisableRoomTiles(valueScript.RoomGameObjects);
+        }
+    */
 
-    public void ImportRooms(Transform groundTilemap, Transform wallTilemap) {
-        
+    public List<Transform> ImportRooms() {
+        List<Transform> MainTilemaps = new();
+
         for (int childIndex = 0; childIndex < transform.childCount; childIndex++) {
             Transform gameChild = transform.GetChild(childIndex);
             switch (gameChild.tag) {
@@ -41,14 +42,15 @@ public class CopyTileMapToMain : MonoBehaviour
                     break;
 
                 case MainWallTilemapTag:
-                    wallTilemap = gameChild;
+                    MainTilemaps.Add(gameChild);
                     break;
 
                 case MainGroundTilemapTag:
-                    groundTilemap = gameChild;
+                    MainTilemaps.Add(gameChild);
                     break;
             }
         }
+        return MainTilemaps;
     }
 
     public void SortTileMapsInRoom()
