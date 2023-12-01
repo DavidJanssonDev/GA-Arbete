@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using System.Linq;
+using RoomStuff;
 
 public class CopyTileMapToMain : MonoBehaviour
 {
     private FloorValueScript valueScript;
+    private FloorGeneration floorGeneration;
 
     private readonly List<Tilemap> wallTilemaps = new();
     private readonly List<Tilemap> groundTilemaps = new();
@@ -21,41 +22,40 @@ public class CopyTileMapToMain : MonoBehaviour
 
     private void Awake() { 
         valueScript = GetComponent<FloorValueScript>();
+        floorGeneration = GetComponent<FloorGeneration>();
     }
-
+/*
     public void CopyTileMap() {
         SortTileMapsInRoom();
         CopyTilesToTilemap(wallTilemaps, mainWallTilemap);
         CopyTilesToTilemap(groundTilemaps, mainGroundTilemap);
         DisableRoomTiles(valueScript.RoomGameObjects);
     }
+*/
 
-    public void ImportRooms()
-    {
+    public void ImportRooms() {
         
-        for (int childIndex = 0; childIndex < transform.childCount; childIndex++)
-        {
+        for (int childIndex = 0; childIndex < transform.childCount; childIndex++) {
             Transform gameChild = transform.GetChild(childIndex);
+            switch (gameChild.tag) {
+                case "Room":
+                    valueScript.RoomList.Add(new Room(gameChild.name, gameChild, true));
+                    break;
 
-            if (gameChild.CompareTag("Room"))
-            {
-                valueScript.RoomGameObjects.Add(gameChild);
-            }
-            else if (gameChild.CompareTag(MainWallTilemapTag))
-            {
-                mainWallTilemap = gameChild;
-            }
-            else if (gameChild.CompareTag(MainGroundTilemapTag))
-            {
-                mainGroundTilemap = gameChild;
+                case MainWallTilemapTag:
+                    mainWallTilemap = gameChild;
+                    break;
+
+                case MainGroundTilemapTag:
+                    mainGroundTilemap = gameChild;
+                    break;
             }
         }
-        
     }
 
     public void SortTileMapsInRoom()
     {
-        foreach (var room in valueScript.RoomGameObjects)
+        foreach (var room in valueScript.RoomObjects)
         {
             var roomScript = room.GetComponent<roomInfoScript>();
             roomScript.GetChildrenInRoom();

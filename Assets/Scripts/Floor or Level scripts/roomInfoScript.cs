@@ -11,8 +11,6 @@ public class roomInfoScript : MonoBehaviour {
     // THE LIST WITH THE CLOSEST ROOM ARE STORED
     public List<Dictionary<string, Transform>> closestRoomList = new();
 
-    public List<float> roomLengthToOtherRoom = new(); // The index is the index of the room list
-
     public List<Transform> roomChildren = new();
     
     public List<Vector3> roomDoorPos = new();
