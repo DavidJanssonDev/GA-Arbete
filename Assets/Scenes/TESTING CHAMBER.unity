@@ -169,11 +169,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16456b5a84bfe6f44a8852750768d8a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomLengthToOtherRoom: []
-  roomChildren: []
-  roomDoorPos: []
-  roomDoorAvailebole: 0
-  doorTargetTile: {fileID: 11400000, guid: c6139a7af1ebfce4da96a748798b45f5, type: 2}
 --- !u!1 &126805965
 GameObject:
   m_ObjectHideFlags: 0
@@ -3128,7 +3123,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FloorValueSize: 90
   RoomDistanceBetween: 7
-  RoomGameObjects: []
 --- !u!114 &909853857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6371,11 +6365,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16456b5a84bfe6f44a8852750768d8a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomLengthToOtherRoom: []
-  roomChildren: []
-  roomDoorPos: []
-  roomDoorAvailebole: 0
-  doorTargetTile: {fileID: 11400000, guid: c6139a7af1ebfce4da96a748798b45f5, type: 2}
 --- !u!1 &1890627926
 GameObject:
   m_ObjectHideFlags: 2
