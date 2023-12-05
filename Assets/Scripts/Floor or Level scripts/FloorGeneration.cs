@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -30,6 +29,8 @@ public class FloorGeneration : MonoBehaviour {
     private void Start() {
        
         List<Tilemap> TempMainMaps = tileCopyScript.ImportRoomObjects(roomDoorTile, emptyGroundTile); // Takes in the Rooms and seperates them
+        
+        
         foreach (var tilemap in TempMainMaps) {
             if (tilemap.transform.CompareTag("Main wall tilemap")){
                 MainWallTilemap = tilemap;
@@ -37,14 +38,19 @@ public class FloorGeneration : MonoBehaviour {
                 MainGroundTilemap = tilemap;
             }
         }
-
-
-        
+               
         foreach (var room in floorValueScript.RoomList) {
-            Debug.Log(room.Name);
+            
             room.CopyTileMap(MainWallTilemap,MainGroundTilemap);
         }
         
+        foreach (var room in floorValueScript.RoomList) {
+            Debug.Log($"ROOM: {room.Name}");
+            Debug.Log("______________________");
+            room.DebugDictionary(room.DoorPos);
+            Debug.Log("______________________");
+        }
+
 
     }
 }
@@ -60,7 +66,7 @@ namespace RoomStuff
 
         public Tile DoorTile;
         public Tile GroundTile;
-        public List<Vector3> DoorPos; // a list of postions of where the doors is
+        public Dictionary<string, Vector3> DoorPos; // a list of postions of where the doors is
         public List<Transform> ClosestRooms;
 
 
@@ -92,8 +98,39 @@ namespace RoomStuff
             return Vector3.Distance(RoomTransform.position, targetPoint.position);
         }
 
+        public void DebugDictionary(Dictionary<string, Vector3> dictionary)
+        {
+            // Iterate through the dictionary
+            foreach (var keyValuePair in dictionary) {
+                Debug.Log($"Key: {keyValuePair.Key}, Value: {keyValuePair.Value}");
+            }
+        }
+
         public void GetClosestRooms() {
 
+        }
+        private string GetDirection(Vector3Int vector)
+        {
+            if (vector.y > 0) {
+
+                return "North";
+
+            } else if (vector.y < 0) {
+
+                return "South";
+
+            } else if (vector.x > 0) {
+                
+                return "East";
+
+            } else if (vector.x < 0) {
+                
+                return "West";
+
+            } else {
+                
+                return "Not a cardinal direction";
+            }
         }
 
         public void GetRoomDoors() {
@@ -110,13 +147,14 @@ namespace RoomStuff
 
                     if (sourceTile != null)
                     {
-                        // Get the sprite of the tile
-                        Sprite tileSprite = (sourceTile as Tile)?.sprite;
+                        if ((sourceTile as Tile)?.sprite == DoorTile.sprite) {
 
-                        if (tileSprite == DoorTile.sprite) {
-                            DoorPos.Add(tilemap.GetCellCenterWorld(cellPosition));
+                            string doorDirection = GetDirection(cellPosition);
+                            DoorPos.Add(doorDirection, tilemap.GetCellCenterWorld(cellPosition));
+
                             tilemap.SetTile(cellPosition, GroundTile);
                             tilemap.RefreshTile(cellPosition);
+
                         }
                     }
                 }
@@ -125,13 +163,15 @@ namespace RoomStuff
 
         public void CopyTileMap(Tilemap mainWallTilemap, Tilemap mainGroundTilemap)
         {
+            // Get the door postions and set it to a empty ground sprite
+            GetRoomDoors();
+
             // Copys the Wall tilemaps to the tilemap
             CopysTileMapToTilemap(mainWallTilemap, Tilemaps.Find(tilemap => tilemap.CompareTag("Wall tilemap")));
 
             // Copys the wall tilemaps to the tilemap
             CopysTileMapToTilemap(mainGroundTilemap, Tilemaps.Find(tilemap => tilemap.CompareTag("Ground tilemap")));
 
-            GetRoomDoors();
         }
 
         // Copies tiles from one Tilemap (orgTilemap) to another Tilemap (tilemapToCopyTo)
