@@ -1,3 +1,4 @@
+using RoomStuff;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,7 +29,7 @@ public class FloorGeneration : MonoBehaviour {
 
     private void Start() {
        
-        List<Tilemap> TempMainMaps = tileCopyScript.ImportRoomObjects(roomDoorTile, emptyGroundTile); // Takes in the Rooms and seperates them
+        List<Tilemap> TempMainMaps = ImportRoomObjects(roomDoorTile, emptyGroundTile); // Takes in the Rooms and seperates them
         
         
         foreach (var tilemap in TempMainMaps) {
@@ -47,11 +48,38 @@ public class FloorGeneration : MonoBehaviour {
         foreach (var room in floorValueScript.RoomList) {
             Debug.Log($"ROOM: {room.Name}");
             Debug.Log("______________________");
-            room.DebugDictionary(room.DoorPos);
+            room.DisplayDoorInfo();
             Debug.Log("______________________");
         }
 
 
+    }
+    public List<Tilemap> ImportRoomObjects(Tile doorSprite, Tile emptyGroundSprite)
+    {
+        List<Tilemap> MainTilemaps = new();
+
+
+        for (int childIndex = 0; childIndex < transform.childCount; childIndex++)
+        {
+            Transform gameChild = transform.GetChild(childIndex);
+
+
+            switch (gameChild.tag)
+            {
+                case "Room":
+                    floorValueScript.RoomList.Add(new Room(gameChild.name, gameChild, true, doorSprite, emptyGroundSprite));
+                    break;
+
+                case "Main wall tilemap":
+                    MainTilemaps.Add(gameChild.GetComponent<Tilemap>());
+                    break;
+
+                case "Main ground tilemap":
+                    MainTilemaps.Add(gameChild.GetComponent<Tilemap>());
+                    break;
+            }
+        }
+        return MainTilemaps;
     }
 }
 
@@ -66,7 +94,7 @@ namespace RoomStuff
 
         public Tile DoorTile;
         public Tile GroundTile;
-        public Dictionary<string, Vector3> DoorPos; // a list of postions of where the doors is
+        public Dictionary<string, Door> DoorPos; // a list of postions of where the doors is
         public List<Transform> ClosestRooms;
 
 
@@ -98,11 +126,11 @@ namespace RoomStuff
             return Vector3.Distance(RoomTransform.position, targetPoint.position);
         }
 
-        public void DebugDictionary(Dictionary<string, Vector3> dictionary)
+        public void DisplayDoorInfo()
         {
             // Iterate through the dictionary
-            foreach (var keyValuePair in dictionary) {
-                Debug.Log($"Key: {keyValuePair.Key}, Value: {keyValuePair.Value}");
+            foreach (var keyValuePair in DoorPos) {
+                Debug.Log($"Key: {keyValuePair.Key}, Value: {keyValuePair.Value.doorPostion}");
             }
         }
 
@@ -150,7 +178,7 @@ namespace RoomStuff
                         if ((sourceTile as Tile)?.sprite == DoorTile.sprite) {
 
                             string doorDirection = GetDirection(cellPosition);
-                            DoorPos.Add(doorDirection, tilemap.GetCellCenterWorld(cellPosition));
+                            DoorPos.Add(doorDirection, new Door(tilemap.GetCellCenterWorld(cellPosition), true));
 
                             tilemap.SetTile(cellPosition, GroundTile);
                             tilemap.RefreshTile(cellPosition);
@@ -198,6 +226,17 @@ namespace RoomStuff
             }
         }
 
+    }
+
+
+    public class Door {
+        public Vector3 doorPostion;
+        public bool doorAvailebole;
+        
+        public Door(Vector3 postion, bool availebole) {
+            doorPostion = postion;
+            doorAvailebole = availebole;
+        }
     }
 
 }

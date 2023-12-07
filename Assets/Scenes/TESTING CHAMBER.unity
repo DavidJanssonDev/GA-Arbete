@@ -667,7 +667,6 @@ GameObject:
   - component: {fileID: 909853852}
   - component: {fileID: 909853855}
   - component: {fileID: 909853858}
-  - component: {fileID: 909853857}
   m_Layer: 0
   m_Name: Floor
   m_TagString: Floor
@@ -720,18 +719,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FloorValueSize: 90
   RoomDistanceBetween: 7
---- !u!114 &909853857
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 909853851}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c2f2632aacbb0e45ae24bd352125af1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &909853858
 MonoBehaviour:
   m_ObjectHideFlags: 0
