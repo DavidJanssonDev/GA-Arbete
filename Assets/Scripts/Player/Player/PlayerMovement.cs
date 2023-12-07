@@ -6,11 +6,12 @@ public class PlayerMovement : MonoBehaviour
 {
     // Player 
     private Rigidbody2D _playerRigidbody2D;
-    private PlayerController InputConttroller;
+    private PlayerController _inputConttroller;
+    private PlayerValueStats _playerValueStats;
 
     // Player Movement Speed
     [SerializeField] 
-    private float _movementSpeed = 5f;
+    
 
     // Variabels for smoth player movement
     private Vector2 _playerMovement;
@@ -20,12 +21,13 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         _playerRigidbody2D = GetComponent<Rigidbody2D>();
-        InputConttroller = GetComponent<PlayerController>();
+        _inputConttroller = GetComponent<PlayerController>();
+        _playerValueStats = GetComponent<PlayerValueStats>();
     }
 
     private void Update()
     {
-        _playerMovement = InputConttroller.rawPlayerMovementControlls;
+        _playerMovement = _inputConttroller.rawPlayerMovementControlls;
     }
 
     // Update is called once per frame
@@ -36,6 +38,6 @@ public class PlayerMovement : MonoBehaviour
             _playerMovement,
             ref _movementInputSmoothVelocity,
             0.1f);
-        _playerRigidbody2D.velocity = _movementSmoothedInput * _movementSpeed;
+        _playerRigidbody2D.velocity = _movementSmoothedInput * _playerValueStats.MovementSpeed;
     }
 }
