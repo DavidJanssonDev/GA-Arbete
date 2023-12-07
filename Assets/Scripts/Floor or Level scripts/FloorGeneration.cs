@@ -9,7 +9,6 @@ using UnityEngine.Tilemaps;
 public class FloorGeneration : MonoBehaviour {
 
     private FloorValueScript floorValueScript;
-    private CopyTileMapToMain tileCopyScript;
 
     [Header("Map Room Sprite Stuff")]
     [SerializeField] private Tile roomDoorTile;
@@ -24,7 +23,6 @@ public class FloorGeneration : MonoBehaviour {
 
 
         floorValueScript = GetComponent<FloorValueScript>();
-        tileCopyScript = GetComponent<CopyTileMapToMain>();
     }
 
     private void Start() {
