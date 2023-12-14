@@ -12,8 +12,7 @@ TagManager:
   - Main wall tilemap
   - Main ground tilemap
   - Floor
-  - Health Tag
-  - AlgoTilemap
+  - Player Stats Text
   layers:
   - Default
   - TransparentFX

@@ -13,7 +13,6 @@ public class FloorGeneration : MonoBehaviour
 
     private Tilemap MainWallTilemap;
     private Tilemap MainGroundTilemap;
-    private Tilemap AlgorithmTilemap;
 
     private void Awake()
     {
