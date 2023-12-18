@@ -33,11 +33,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     private void FixedUpdate()
     {
-        _movementSmoothedInput = Vector2.SmoothDamp(
-            _movementSmoothedInput,
-            _playerMovement,
-            ref _movementInputSmoothVelocity,
-            0.1f);
+        _movementSmoothedInput = Vector2.SmoothDamp( _movementSmoothedInput, _playerMovement, ref _movementInputSmoothVelocity,0.1f );
         _playerRigidbody2D.velocity = _movementSmoothedInput * _playerValueStats.MovementSpeed;
     }
 }

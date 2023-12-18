@@ -19,7 +19,7 @@ public class FloorGeneration : MonoBehaviour
         floorValueScript = GetComponent<FloorValueScript>();
     }
 
-    private void Start()
+    public void Generate()
     {
         ImportRoomObjects(roomDoorTile, emptyGroundTile);
 
