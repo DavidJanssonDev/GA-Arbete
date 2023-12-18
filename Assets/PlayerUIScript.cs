@@ -39,7 +39,7 @@ public class PlayerUIScript : MonoBehaviour
         foreach (var TextObject in playerValueStats.playerStatsTextObjects)
         {
             var renderScript = TextObject.GetComponent<TextUIRender>();
-            renderScript.Generate(playerValueStats.playerTextUITypes[renderScript.TypeOfGame]);       
+            
         }
 
     }
