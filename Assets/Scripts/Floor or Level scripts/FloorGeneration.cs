@@ -50,11 +50,9 @@ public class FloorGeneration : MonoBehaviour
                     floorValueScript.RoomList.Add(new Room(gameChild.name, gameChild, true, doorSprite, emptyGroundSprite));
                     break;
                 case "Main wall tilemap":
-                    Debug.Log("Main Wall");
                     MainWallTilemap = gameChild.GetComponent<Tilemap>();
                     break;
                 case "Main ground tilemap":
-                    Debug.Log("Main Ground");
                     MainGroundTilemap = gameChild.GetComponent<Tilemap>();
                     break;
             }
@@ -216,7 +214,8 @@ namespace RoomStuff
                     var cellPosition = new Vector3Int(tileX, tileY, 0);
                     var sourceTile = tilemap.GetTile(cellPosition);
 
-                    if (sourceTile != null && (sourceTile as Tile)?.sprite == DoorTile.sprite)
+                    Tile tile = (sourceTile as Tile);
+                    if (sourceTile != null && tile?.sprite == DoorTile.sprite)
                     {
                         string doorDirection = Door.GetDirection(cellPosition);
 
@@ -240,4 +239,6 @@ namespace RoomStuff
         }
     }
 }
+
+
 
