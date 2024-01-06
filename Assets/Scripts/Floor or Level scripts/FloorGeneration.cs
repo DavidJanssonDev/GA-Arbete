@@ -18,12 +18,15 @@ public class FloorGeneration : MonoBehaviour
         floorValueScript = GetComponent<FloorValueScript>();
     }
 
+    // Method to generate the floor
     public void Generate()
     {
+        // Import room objects and copy their tilemaps to the main tilemap
         ImportRoomObjects(roomDoorTile);
         CopyRoomTilemapsToMainTilemap();
     }
 
+    // Copy tilemaps of each room to the main tilemap
     private void CopyRoomTilemapsToMainTilemap()
     {
         // Check if MainWallTilemap and MainGroundTilemap are not null before calling CopyTileMap
@@ -38,7 +41,7 @@ public class FloorGeneration : MonoBehaviour
 
 
 
-
+    // Import room objects and generate Room objects for each room
     private void ImportRoomObjects(Tile doorTile)
     {
         // Import the Room Object in from the grid and generate a Room Object for each room 
@@ -57,7 +60,9 @@ public class FloorGeneration : MonoBehaviour
         }
         
     }
-    
+
+
+    // Generate a Room object
     private Room GenerateRoom(Transform gameChild, bool canIncludeEnemy, Tile doorTile) 
     {
         // Generate the Room
@@ -68,6 +73,7 @@ public class FloorGeneration : MonoBehaviour
 
 namespace RoomStuff
 {
+    // Class representing a room
     public class Room
     {
         public string Name;
@@ -76,7 +82,7 @@ namespace RoomStuff
         private List<Tilemap> RoomTilemaps;
 
         public Tile DoorTile;
-        public Dictionary<string, Door> DoorPos;
+        public Dictionary<string, Door> DoorListPos;
 
         public List<Room> ClosestRooms;
         public List<Room> RoomObjectClosestRooms;
@@ -84,6 +90,7 @@ namespace RoomStuff
 
         public int AvailableDoors;
 
+        // Constructor to initialize room properties
         public Room(string name, Transform transform, bool canContainEnemies, Tile doorSprite)
         {
             Name = name;
@@ -95,11 +102,11 @@ namespace RoomStuff
             RoomTilemaps = new List<Tilemap>();
             RoomObjectClosestRooms = new List<Room>();
             ValueClosestRooms = new List<float>();
-            DoorPos = new Dictionary<string, Door>();
-
+            DoorListPos = new Dictionary<string, Door>();
+            SetTilemaps();
         }
-        
 
+        // Method to set tilemaps of the room
         private void SetTilemaps()
         {
 
@@ -112,12 +119,15 @@ namespace RoomStuff
             }
         }
 
-
+        // Method to get the distance to another room
         public float GetDistanceToRoom(Transform targetPoint)
-        {
+        {   
+            
             return Vector3.Distance(RoomTransform.position, targetPoint.position);
         }
 
+        
+        // Methods to generate and sort data about closest rooms
         public void GenerateSoritingRoomData()
         {
             GenerateData();
@@ -125,7 +135,7 @@ namespace RoomStuff
         }
 
         public void GenerateData()
-        {
+        { 
             foreach (var room in FloorGeneration.floorValueScript.RoomList)
             {
                 ValueClosestRooms.Add(GetDistanceToRoom(room.RoomTransform));
@@ -154,26 +164,33 @@ namespace RoomStuff
             }
         }
 
+       
+        // Method to copy the tilemap of the room to the main tilemap
         public void CopyTileMap(Tilemap mainWallTilemap, Tilemap mainGroundTilemap)
         {
-            DoorPos = TilemapScript.GetRoomDoorTilePos(RoomTilemaps, DoorTile);
+            DoorListPos = TilemapScript.GetRoomDoorTilePos(RoomTilemaps, DoorTile);
+            AvailableDoors = DoorListPos.Count;
 
             TilemapScript.CopyTileMapToTilemap(mainWallTilemap, RoomTilemaps.Find(tilemap => tilemap.CompareTag("Wall tilemap")));
             TilemapScript.CopyTileMapToTilemap(mainGroundTilemap, RoomTilemaps.Find(tilemap => tilemap.CompareTag("Ground tilemap")));
         }
     }
 
+    // Class representing a door in a room
+
     public class Door
     {
         public Vector3 DoorPosition;
         public bool DoorAvailable;
 
+        // Constructor to initialize door properties
         public Door(Vector3 position, bool available)
         {
             DoorPosition = position;
             DoorAvailable = available;
         }
 
+        // Method to get the cardinal direction based on a vector
         public static string GetDirection(Vector3Int vector)
         {
             if (vector.y > 0) return "North";
@@ -184,8 +201,11 @@ namespace RoomStuff
         }
     }
 
+    // Class containing static methods related to Tilemaps
     public class TilemapScript
     {
+
+        // Method to copy the contents of one tilemap to another
         public static void CopyTileMapToTilemap(Tilemap tilemapToCopyTo, Tilemap orgTilemap)
         {
             var tilemapPos = orgTilemap.transform.position;
@@ -210,6 +230,7 @@ namespace RoomStuff
             }
         }
 
+        // Method to get door positions from a ground tilemap
         public static Dictionary<string, Door> GetRoomDoorTilePos(List<Tilemap> tilemapList, Tile DoorTile)
         {
             Dictionary<string, Door> doorList = new();
@@ -225,9 +246,23 @@ namespace RoomStuff
                     var sourceTile = tilemap.GetTile(cellPosition);
 
                     Tile tile = (sourceTile as Tile);
-                    if (sourceTile != null && tile != null ? tile.sprite : null == DoorTile.sprite)
+                    if (sourceTile != null && tile != null && tile.sprite == DoorTile.sprite)
                     {
                         string doorDirection = Door.GetDirection(cellPosition);
+
+                        // Handle the case where the key already exists in the dictionary
+                        if (doorList.ContainsKey(doorDirection))
+                        {
+                            int count = 1;
+                            string uniqueKey;
+                            do
+                            {
+                                uniqueKey = $"{doorDirection}_{count}";
+                                count++;
+                            } while (doorList.ContainsKey(uniqueKey));
+
+                            doorDirection = uniqueKey;
+                        }
 
                         doorList.Add(doorDirection, new Door(tilemap.GetCellCenterWorld(cellPosition), true));
                     }
@@ -237,6 +272,8 @@ namespace RoomStuff
             return doorList;
         }
 
+
+        // Method to replace a tile in a tilemap
         public static void ReplaceTile(Vector3Int cellPosition, Tile replacementTile, Tilemap tilemap)
         {
             tilemap.SetTile(cellPosition, replacementTile);

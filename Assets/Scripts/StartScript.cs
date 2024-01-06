@@ -15,6 +15,9 @@ public class StartScript : MonoBehaviour
 
     private void Start()
     {
+
         floorGenerationScript.Generate();
+
+
     }
 }
