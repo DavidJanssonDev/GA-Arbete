@@ -2568,7 +2568,7 @@ GameObject:
   - component: {fileID: 938955406}
   m_Layer: 5
   m_Name: Health Text
-  m_TagString: Player Stats Text
+  m_TagString: Player Health
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4712,6 +4712,7 @@ GameObject:
   - component: {fileID: 1507814570}
   - component: {fileID: 1507814569}
   - component: {fileID: 1507814568}
+  - component: {fileID: 1507814575}
   - component: {fileID: 1507814574}
   m_Layer: 0
   m_Name: 'Player '
@@ -4969,6 +4970,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Health: 10
   MovementSpeed: 5
+--- !u!114 &1507814575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1507814567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb935da25e5df8f40bb4dcb83e50a83f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TypesOfUIElements: []
+  PlayerStatsMapTransform: {fileID: 0}
+  UIGameObjects: []
 --- !u!1 &1513848797
 GameObject:
   m_ObjectHideFlags: 0

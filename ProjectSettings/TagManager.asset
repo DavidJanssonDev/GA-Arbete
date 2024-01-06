@@ -12,7 +12,8 @@ TagManager:
   - Main wall tilemap
   - Main ground tilemap
   - Floor
-  - Player Stats Text
+  - Player Health
+  - Player Damage
   layers:
   - Default
   - TransparentFX
