@@ -9,10 +9,9 @@ public class FloorGeneration : MonoBehaviour
 
     [Header("Map Room Sprite Stuff")]
     [SerializeField] private Tile roomDoorTile;
-    [SerializeField] private Tile emptyGroundTile;
 
-    private Tilemap MainWallTilemap;
-    private Tilemap MainGroundTilemap;
+    [SerializeField] private Tilemap MainWallTilemap;
+    [SerializeField] private Tilemap MainGroundTilemap;
 
     private void Awake()
     {
@@ -21,44 +20,50 @@ public class FloorGeneration : MonoBehaviour
 
     public void Generate()
     {
-        ImportRoomObjects(roomDoorTile, emptyGroundTile);
+        ImportRoomObjects(roomDoorTile);
+        CopyRoomTilemapsToMainTilemap();
+    }
 
+    private void CopyRoomTilemapsToMainTilemap()
+    {
         // Check if MainWallTilemap and MainGroundTilemap are not null before calling CopyTileMap
-        if (MainWallTilemap != null && MainGroundTilemap != null)
+        if (MainWallTilemap != null && MainGroundTilemap != null && floorValueScript.RoomList != null)
         {
             foreach (var room in floorValueScript.RoomList)
             {
                 room.CopyTileMap(MainWallTilemap, MainGroundTilemap);
             }
         }
-        else
-        {
-            Debug.LogError("MainWallTilemap or MainGroundTilemap is null. Check your tilemap assignments.");
-        }
     }
 
-    public void ImportRoomObjects(Tile doorSprite, Tile emptyGroundSprite)
+
+
+
+    private void ImportRoomObjects(Tile doorTile)
     {
+        // Import the Room Object in from the grid and generate a Room Object for each room 
+
 
         for (int childIndex = 0; childIndex < transform.childCount; childIndex++)
         {
             Transform gameChild = transform.GetChild(childIndex);
 
-            switch (gameChild.tag)
-            {
-                case "Room":
-                    floorValueScript.RoomList.Add(new Room(gameChild.name, gameChild, true, doorSprite, emptyGroundSprite));
-                    break;
-                case "Main wall tilemap":
-                    MainWallTilemap = gameChild.GetComponent<Tilemap>();
-                    break;
-                case "Main ground tilemap":
-                    MainGroundTilemap = gameChild.GetComponent<Tilemap>();
-                    break;
-            }
+           if (gameChild.CompareTag("Room"))
+           {
+                // For each Room object makes a new script of it
+                floorValueScript.RoomList.Add(GenerateRoom(gameChild, true, doorTile));
+           }
+               
         }
         
     }
+    
+    private Room GenerateRoom(Transform gameChild, bool canIncludeEnemy, Tile doorTile) 
+    {
+        // Generate the Room
+        return new Room(gameChild.name, gameChild, canIncludeEnemy, doorTile);
+    }
+
 }
 
 namespace RoomStuff
@@ -68,10 +73,9 @@ namespace RoomStuff
         public string Name;
         public bool CanContainEnemies;
         public Transform RoomTransform;
-        public List<Tilemap> Tilemaps;
+        private List<Tilemap> RoomTilemaps;
 
         public Tile DoorTile;
-        public Tile GroundTile;
         public Dictionary<string, Door> DoorPos;
 
         public List<Room> ClosestRooms;
@@ -80,35 +84,41 @@ namespace RoomStuff
 
         public int AvailableDoors;
 
-        public Room(string name, Transform transform, bool canContainEnemies, Tile doorSprite, Tile groundSprite)
+        public Room(string name, Transform transform, bool canContainEnemies, Tile doorSprite)
         {
             Name = name;
             DoorTile = doorSprite;
-            GroundTile = groundSprite;
             RoomTransform = transform;
             CanContainEnemies = canContainEnemies;
             AvailableDoors = 0;
 
-            Tilemaps = new List<Tilemap>();
+            RoomTilemaps = new List<Tilemap>();
             RoomObjectClosestRooms = new List<Room>();
             ValueClosestRooms = new List<float>();
             DoorPos = new Dictionary<string, Door>();
 
-            foreach (Transform child in transform)
+        }
+        
+
+        private void SetTilemaps()
+        {
+
+            foreach (Transform child in RoomTransform)
             {
                 if (child.CompareTag("Wall tilemap") || child.CompareTag("Ground tilemap"))
                 {
-                    Tilemaps.Add(child.GetComponent<Tilemap>());
+                    RoomTilemaps.Add(child.GetComponent<Tilemap>());
                 }
             }
         }
+
 
         public float GetDistanceToRoom(Transform targetPoint)
         {
             return Vector3.Distance(RoomTransform.position, targetPoint.position);
         }
 
-        public void GetClosestRooms()
+        public void GenerateSoritingRoomData()
         {
             GenerateData();
             SortListOfClosestRoom();
@@ -146,10 +156,10 @@ namespace RoomStuff
 
         public void CopyTileMap(Tilemap mainWallTilemap, Tilemap mainGroundTilemap)
         {
-            DoorPos = TilemapScript.GetRoomDoors(false, Tilemaps, DoorTile, GroundTile);
+            DoorPos = TilemapScript.GetRoomDoorTilePos(RoomTilemaps, DoorTile);
 
-            TilemapScript.CopyTileMapToTilemap(mainWallTilemap, Tilemaps.Find(tilemap => tilemap.CompareTag("Wall tilemap")));
-            TilemapScript.CopyTileMapToTilemap(mainGroundTilemap, Tilemaps.Find(tilemap => tilemap.CompareTag("Ground tilemap")));
+            TilemapScript.CopyTileMapToTilemap(mainWallTilemap, RoomTilemaps.Find(tilemap => tilemap.CompareTag("Wall tilemap")));
+            TilemapScript.CopyTileMapToTilemap(mainGroundTilemap, RoomTilemaps.Find(tilemap => tilemap.CompareTag("Ground tilemap")));
         }
     }
 
@@ -200,7 +210,7 @@ namespace RoomStuff
             }
         }
 
-        public static Dictionary<string, Door> GetRoomDoors(bool replaceDoorSprites, List<Tilemap> tilemapList, Tile DoorTile, Tile GroundTile)
+        public static Dictionary<string, Door> GetRoomDoorTilePos(List<Tilemap> tilemapList, Tile DoorTile)
         {
             Dictionary<string, Door> doorList = new();
 
@@ -215,16 +225,11 @@ namespace RoomStuff
                     var sourceTile = tilemap.GetTile(cellPosition);
 
                     Tile tile = (sourceTile as Tile);
-                    if (sourceTile != null && tile?.sprite == DoorTile.sprite)
+                    if (sourceTile != null && tile != null ? tile.sprite : null == DoorTile.sprite)
                     {
                         string doorDirection = Door.GetDirection(cellPosition);
 
                         doorList.Add(doorDirection, new Door(tilemap.GetCellCenterWorld(cellPosition), true));
-
-                        if (replaceDoorSprites)
-                        {
-                            ReplaceTile(cellPosition, GroundTile, tilemap);
-                        }
                     }
                 }
             }

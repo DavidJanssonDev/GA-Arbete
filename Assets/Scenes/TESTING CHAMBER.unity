@@ -2269,6 +2269,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0655140e223517a4ab0b7b01d43232ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerStats: {fileID: 0}
+  _text: {fileID: 0}
 --- !u!114 &782130121
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2538,7 +2540,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomDoorTile: {fileID: 11400000, guid: c6139a7af1ebfce4da96a748798b45f5, type: 2}
-  emptyGroundTile: {fileID: 11400000, guid: 9a286adeada1a5a4a88a8867ba9dbddd, type: 2}
+  MainWallTilemap: {fileID: 126805968}
+  MainGroundTilemap: {fileID: 1046439828}
 --- !u!114 &909853859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2563,8 +2566,6 @@ GameObject:
   - component: {fileID: 938955405}
   - component: {fileID: 938955407}
   - component: {fileID: 938955406}
-  - component: {fileID: 938955408}
-  - component: {fileID: 938955409}
   m_Layer: 5
   m_Name: Health Text
   m_TagString: Player Stats Text
@@ -2688,36 +2689,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 938955404}
   m_CullTransparentMesh: 1
---- !u!114 &938955408
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 938955404}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29bc241f7b078d447a74e6c9aadad46e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TypeOfGame: Health
---- !u!114 &938955409
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 938955404}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e741851cba3ad425c91ecf922cc6b379, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _data:
-    _json: '{"declarations":{"Kind":"Object","collection":{"$content":[{"name":"Type
-      of UI","value":{"$content":"HEALTH","$type":"PlayerValueStats+PlayerUIEnums"},"typeHandle":{"Identification":"PlayerValueStats+PlayerUIEnums,
-      Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
-    _objectReferences: []
 --- !u!1 &967773743
 GameObject:
   m_ObjectHideFlags: 2
@@ -4741,7 +4712,6 @@ GameObject:
   - component: {fileID: 1507814570}
   - component: {fileID: 1507814569}
   - component: {fileID: 1507814568}
-  - component: {fileID: 1507814575}
   - component: {fileID: 1507814574}
   m_Layer: 0
   m_Name: 'Player '
@@ -4999,19 +4969,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Health: 10
   MovementSpeed: 5
-  playerStatsTextObjects: []
---- !u!114 &1507814575
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1507814567}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32fc77791cbeb2247a5e4aa177f42277, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1513848797
 GameObject:
   m_ObjectHideFlags: 0
