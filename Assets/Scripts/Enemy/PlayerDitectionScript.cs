@@ -14,8 +14,7 @@ public class PlayerDitectionScript : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D gameobject)
     {
        
-
-        if (gameobject.CompareTag("Player"))
+        if (gameobject.CompareTag("Player") && _enemyValuesScript.EnemyDitectionEnabel)
         {
             _enemyValuesScript._PlayerDitected = true;
         }
@@ -25,7 +24,7 @@ public class PlayerDitectionScript : MonoBehaviour
     private void OnTriggerExit2D(Collider2D gameobject)
     {
         
-        if (gameobject.CompareTag("Player"))
+        if (gameobject.CompareTag("Player") && _enemyValuesScript.EnemyDitectionEnabel)
         {
             _enemyValuesScript._PlayerDitected = false;
         }

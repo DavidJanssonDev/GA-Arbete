@@ -1,74 +1,78 @@
 using RoomStuff;
+using GenerationOfFloorClassStuff;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class FloorGeneration : MonoBehaviour
+namespace GenerationOfFloorClassStuff
 {
-    public static FloorValueScript floorValueScript;
-
-    [Header("Map Room Sprite Stuff")]
-    [SerializeField] private Tile roomDoorTile;
-
-    [SerializeField] private Tilemap MainWallTilemap;
-    [SerializeField] private Tilemap MainGroundTilemap;
-
-    private void Awake()
+    public class FloorGeneration : MonoBehaviour
     {
-        floorValueScript = GetComponent<FloorValueScript>();
-    }
+        public static FloorValueScript floorValueScript;
 
-    // Method to generate the floor
-    public void Generate()
-    {
-        // Import room objects and copy their tilemaps to the main tilemap
-        ImportRoomObjects(roomDoorTile);
-        CopyRoomTilemapsToMainTilemap();
-    }
+        [Header("Map Room Sprite Stuff")]
+        [SerializeField] private Tile roomDoorTile;
 
-    // Copy tilemaps of each room to the main tilemap
-    private void CopyRoomTilemapsToMainTilemap()
-    {
-        // Check if MainWallTilemap and MainGroundTilemap are not null before calling CopyTileMap
-        if (MainWallTilemap != null && MainGroundTilemap != null && floorValueScript.RoomList != null)
+        [SerializeField] private Tilemap MainWallTilemap;
+        [SerializeField] private Tilemap MainGroundTilemap;
+
+        private void Awake()
         {
-            foreach (var room in floorValueScript.RoomList)
+            floorValueScript = GetComponent<FloorValueScript>();
+        }
+
+        // Method to generate the floor
+        public void Generate()
+        {
+            // Import room objects and copy their tilemaps to the main tilemap
+            ImportRoomObjects(roomDoorTile);
+            CopyRoomTilemapsToMainTilemap();
+        }
+
+        // Copy tilemaps of each room to the main tilemap
+        private void CopyRoomTilemapsToMainTilemap()
+        {
+            // Check if MainWallTilemap and MainGroundTilemap are not null before calling CopyTileMap
+            if (MainWallTilemap != null && MainGroundTilemap != null && floorValueScript.RoomList != null)
             {
-                room.CopyTileMap(MainWallTilemap, MainGroundTilemap);
+                foreach (var room in floorValueScript.RoomList)
+                {
+                    room.CopyTileMap(MainWallTilemap, MainGroundTilemap);
+                }
             }
         }
-    }
 
 
 
-    // Import room objects and generate Room objects for each room
-    private void ImportRoomObjects(Tile doorTile)
-    {
-        // Import the Room Object in from the grid and generate a Room Object for each room 
-
-
-        for (int childIndex = 0; childIndex < transform.childCount; childIndex++)
+        // Import room objects and generate Room objects for each room
+        private void ImportRoomObjects(Tile doorTile)
         {
-            Transform gameChild = transform.GetChild(childIndex);
+            // Import the Room Object in from the grid and generate a Room Object for each room 
 
-           if (gameChild.CompareTag("Room"))
-           {
-                // For each Room object makes a new script of it
-                floorValueScript.RoomList.Add(GenerateRoom(gameChild, true, doorTile));
-           }
+
+            for (int childIndex = 0; childIndex < transform.childCount; childIndex++)
+            {
+                Transform gameChild = transform.GetChild(childIndex);
+
+               if (gameChild.CompareTag("Room"))
+               {
+                    // For each Room object makes a new script of it
+                    floorValueScript.RoomList.Add(GenerateRoom(gameChild, true, doorTile));
+               }
                
-        }
+            }
         
+        }
+
+
+        // Generate a Room object
+        private Room GenerateRoom(Transform gameChild, bool canIncludeEnemy, Tile doorTile) 
+        {
+            // Generate the Room
+            return new Room(gameChild.name, gameChild, canIncludeEnemy, doorTile);
+        }
+
     }
-
-
-    // Generate a Room object
-    private Room GenerateRoom(Transform gameChild, bool canIncludeEnemy, Tile doorTile) 
-    {
-        // Generate the Room
-        return new Room(gameChild.name, gameChild, canIncludeEnemy, doorTile);
-    }
-
 }
 
 namespace RoomStuff

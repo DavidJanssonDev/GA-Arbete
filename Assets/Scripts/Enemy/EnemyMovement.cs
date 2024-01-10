@@ -4,23 +4,29 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
-    EnemyValuesScript _enemyValuesScript;
-    [SerializeField] Vector3 _lastKnowPosition;
+    private EnemyValuesScript enemyValuesScript;
+    private Vector3 lastKnowPosition;
 
     private void Awake()
     {
-        _enemyValuesScript = GetComponent<EnemyValuesScript>();
-        _lastKnowPosition = transform.position;
+        enemyValuesScript = GetComponent<EnemyValuesScript>();
+        lastKnowPosition = transform.position;
     }
 
     private void Update()
     {
-        if (_enemyValuesScript._PlayerDitected)
+        if (enemyValuesScript._PlayerDitected)
         {
-            _lastKnowPosition = _enemyValuesScript.Player.transform.position;
+            lastKnowPosition = enemyValuesScript.Player.transform.position;
         }
 
-        transform.position = Vector3.MoveTowards(transform.position, _lastKnowPosition, _enemyValuesScript._movmentSpeed * Time.deltaTime);
+        MoveEnemy();
+
 
     }
-}
+
+    private void MoveEnemy()
+    {
+        transform.position = Vector3.MoveTowards(transform.position, lastKnowPosition, enemyValuesScript._movmentSpeed * Time.deltaTime);
+    }
+ }

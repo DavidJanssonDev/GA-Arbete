@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerValueStats : MonoBehaviour
+namespace PlayerStats
 {
-    public int Health = 10;
-    public float MovementSpeed = 5f;
+    public class PlayerValueStats : MonoBehaviour
+    {
+        public int Health = 10;
+        public float MovementSpeed = 5f;
+
+    }
 
 }

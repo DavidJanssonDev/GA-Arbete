@@ -2,22 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using GenerationOfFloorClassStuff;
+using UIStuff;
+using PlayerStats;
+
 public class StartScript : MonoBehaviour
 {
     private FloorGeneration floorGenerationScript;
-    private PlayerValueStats playerValueStats;
+    private PlayerUI _PlayerUIScript;
+    [SerializeField] private GameObject _PlayerObject;
+    [SerializeField] private GameObject _GameMapObject;
 
     private void Awake()
     {
-        floorGenerationScript = GameObject.FindGameObjectWithTag("Floor").GetComponent<FloorGeneration>();
-        playerValueStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerValueStats>();
+        floorGenerationScript = _GameMapObject.GetComponent<FloorGeneration>();
+        _PlayerUIScript = _PlayerObject.GetComponent<PlayerUI>();
     }
 
     private void Start()
     {
 
         floorGenerationScript.Generate();
-
-
+        _PlayerUIScript.Generate();
     }
+
 }
