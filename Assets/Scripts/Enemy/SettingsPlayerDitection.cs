@@ -6,7 +6,7 @@ using UnityEngine;
 public class SettingsPlayerDitection : MonoBehaviour
 {
     [Header("DITECTION SETTINGS ")]
-    [SerializeField] GameObject _DitectionObject;
+    [SerializeField] private GameObject _DitectionObject;
      EnemyValuesScript _enemyValuesScript;
 
 

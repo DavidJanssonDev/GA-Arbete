@@ -1,67 +1,89 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
-using TMPro;
+
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 using PlayerStats;
+
 
 namespace UIStuff
 {
     public class PlayerUI : MonoBehaviour
     {
-        public GameObject PlayerObject;
-        public GameObject PlayerStatsObjectParent;
-
-        public List<FieldInfo> PlayerStatsField = new();
-        public List<Transform> PlayerUITranformsList = new();
-
-        public KeyValuePair<string, List<object>> UIStructrue = new();
-
-        /*
-         * KeyParValues {     VAD FÖR SORTS AV STAT
-         *                  string : List<object>  [
-         *                                          Object,
-         *                                          PlayerStats variable Name,
-         *                                          PlayerStats variable Value
-         *                                          ]
-         *                                          
-         */
+        private PlayerValueStats PlayerStatsScript; 
+        public List<Transform> TextObjectList = new();
+        public Dictionary<string, TextMeshProUGUI> TextObjectDictanry = new();
 
 
-
-        public void Generate()
+        public void GenerateTextMeshDictanry()
         {
-            GetRefrenceToPlayerStats();
-            GetPlayerStatsObjects();
-        }
+            PlayerStatsScript = GetComponent<PlayerValueStats>();
 
-        private void GetRefrenceToPlayerStats()
-        {
-            PlayerValueStats playerStatsClass = GetComponent<PlayerValueStats>();
-            PlayerStatsField = new List<FieldInfo>(playerStatsClass.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance));
-        }
+            const string REMOVEDSTRING = "Player";
 
-        private void GetPlayerStatsObjects()
-        {
-            for (int childindex = 0;  childindex < PlayerStatsObjectParent.transform.childCount; childindex++)
+            List<string> keyList = new();
+
+            foreach (Transform TextTransformObject in TextObjectList)
             {
-                PlayerUITranformsList.Add(PlayerStatsObjectParent.transform.GetChild(childindex));
+                string TextObjectTag = TextTransformObject.tag;
+
+                string[] splitTagString = TextObjectTag.Split();
+
+                foreach(string splitString in splitTagString)
+                {
+                    if (splitString != REMOVEDSTRING) 
+                    {
+                        keyList.Add(splitString);
+                    }
+                }
+            }
+
+            for (int index = 0; index < keyList.Count; index++)
+            {
+                TextObjectDictanry.Add(keyList[index], TextObjectList[index].GetComponent<TextMeshProUGUI>());
+            }
+
+            SetUI();
+        }
+
+            
+
+        private void OnCollisionEnter(Collision other)
+        {
+            Debug.Log(other);
+
+            if (other.gameObject.CompareTag("Enemy"))
+            {
+                string UpdateUIType = "Health";
+                int EnemyDamage = other.transform.GetComponent<EnemyValuesScript>().Damage;
+                PlayerStatsScript.Health -= EnemyDamage;
+                UpdateUI(UpdateUIType, PlayerStatsScript.Health);
+            }
+        }
+     
+
+        private void SetUI()
+        {
+            List<string> keyList = new(TextObjectDictanry.Keys);
+            for (int index = 0; index < keyList.Count; index++)
+            {
+                if (keyList[index] == "Health")
+                {
+                    UpdateUI("Health", PlayerStatsScript.Health);
+                }
             }
         }
 
-        private void CreateUIStructre()
+        private void UpdateUI(string TypeOfUI, object newStat)
         {
-            foreach (FieldInfo playerStatvarable in PlayerStatsField)
-            {
-
-                // UIStructrue += new KeyValuePair<string, List<object>>;
-            }
-
-
+            TextMeshProUGUI TextUI = TextObjectDictanry[TypeOfUI];
+            Debug.Log(newStat);
+            TextUI.text = $"{TypeOfUI}: {newStat}";
+            
 
         }
+
+
     }
     
 }

@@ -10,6 +10,7 @@ public class EnemyMovement : MonoBehaviour
     private void Awake()
     {
         enemyValuesScript = GetComponent<EnemyValuesScript>();
+        enemyValuesScript.Player = GameObject.FindGameObjectWithTag("Player");
         lastKnowPosition = transform.position;
     }
 
