@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyValuesScript : MonoBehaviour
 {
-    
+        
 
     [Header("DITECTION Varaible")]
     public float _DitectionRange;

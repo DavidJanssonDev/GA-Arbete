@@ -3,6 +3,7 @@ using GenerationOfFloorClassStuff;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using GenerallStuff;
 
 namespace GenerationOfFloorClassStuff
 {
@@ -54,7 +55,7 @@ namespace GenerationOfFloorClassStuff
             {
                 Transform gameChild = transform.GetChild(childIndex);
 
-               if (gameChild.CompareTag("Room"))
+               if (gameChild.gameObject.layer == (int)LayerStuff.LayerEnum.Room)
                {
                     // For each Room object makes a new script of it
                     floorValueScript.RoomList.Add(GenerateRoom(gameChild, true, doorTile));

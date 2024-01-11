@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-
+using GenerallStuff;
 using UnityEngine;
 using TMPro;
 using PlayerStats;
+using static GenerallStuff.LayerStuff;
 
 
 namespace UIStuff
@@ -19,23 +20,12 @@ namespace UIStuff
         {
             PlayerStatsScript = GetComponent<PlayerValueStats>();
 
-            const string REMOVEDSTRING = "Player";
 
             List<string> keyList = new();
 
             foreach (Transform TextTransformObject in TextObjectList)
             {
-                string TextObjectTag = TextTransformObject.tag;
-
-                string[] splitTagString = TextObjectTag.Split();
-
-                foreach(string splitString in splitTagString)
-                {
-                    if (splitString != REMOVEDSTRING) 
-                    {
-                        keyList.Add(splitString);
-                    }
-                }
+                keyList.Add(TextTransformObject.name);
             }
 
             for (int index = 0; index < keyList.Count; index++)
@@ -48,11 +38,7 @@ namespace UIStuff
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            
-       
-            Debug.Log(collision);
-
-            if (collision.gameObject.CompareTag("Enemy"))
+            if (collision.gameObject.layer == (int)LayerEnum.ENEMY)
             {
                 string UpdateUIType = "Health";
                 int EnemyDamage = collision.transform.GetComponent<EnemyValuesScript>().Damage;
@@ -60,7 +46,7 @@ namespace UIStuff
                 UpdateUI(UpdateUIType, PlayerStatsScript.Health);
             }
         }
-     
+
 
         private void SetUI()
         {

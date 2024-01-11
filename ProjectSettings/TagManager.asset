@@ -21,11 +21,11 @@ TagManager:
   - 
   - Water
   - UI
+  - Player
+  - Enemies
   - 
-  - 
-  - 
-  - 
-  - 
+  - Room
+  - Wall
   - 
   - 
   - 

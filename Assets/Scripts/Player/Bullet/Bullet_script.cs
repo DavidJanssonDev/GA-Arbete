@@ -1,37 +1,58 @@
+using PlayerStats;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using GenerallStuff;
 public class Bullet_script : MonoBehaviour
 {
-    PlayerController _playerValueScript;
-    Vector3 _mousePos;
-    Rigidbody2D _rb;
-    Vector2 _rb_velocity;
-    float _rot_bullet;
+    PlayerController PlayerControllerScript;
+    PlayerValueStats PlayerValueScript;
+    Vector3 MousePos;
+    Rigidbody2D Rb;
+    Vector2 Rb_velocity;
+    float Rot_bullet;
+    int PlayerDamage;
     [SerializeField]  float Force;
 
     private void Awake()    
     {
-        _playerValueScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
-        _rb = GetComponent<Rigidbody2D>();
 
-        _mousePos = _playerValueScript._playerMousePosition;
+        PlayerControllerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        PlayerValueScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerValueStats>();
 
-        Vector3 direction = _mousePos - transform.position;
-        Vector3 Rotation = transform.position - _mousePos;
-        
+        Rb = GetComponent<Rigidbody2D>();
 
-        _rb_velocity = new Vector2(direction.x, direction.y).normalized * Force;
-        _rot_bullet = Mathf.Atan2(Rotation.y, Rotation.x) * Mathf.Rad2Deg;
+        MousePos = PlayerControllerScript._playerMousePosition;
+        PlayerDamage = PlayerValueScript.Damage;
+
+        Vector3 Direction = MousePos - transform.position;
+        Vector3 Rotation = transform.position - MousePos;
+
+
+        Rb_velocity = new Vector2(Direction.x, Direction.y).normalized * Force;
+        Rot_bullet = Mathf.Atan2(Rotation.y, Rotation.x) * Mathf.Rad2Deg;
     }
 
     private void Start()
-    {   
-        _rb.velocity = _rb_velocity;
-        transform.rotation = Quaternion.Euler(0,0, _rot_bullet);
+    {
+        Rb.velocity = Rb_velocity;
+        transform.rotation = Quaternion.Euler(0,0, Rot_bullet);
         
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.layer == (int)LayerStuff.LayerEnum.ENEMY || collision.gameObject.layer == (int)LayerStuff.LayerEnum.Wall)
+        {
+            int EnemyHealth = collision.gameObject.GetComponent<EnemyValuesScript>().Health;
+            EnemyHealth -= 1;
+            if (EnemyHealth >= 0 || collision.gameObject.layer == (int)LayerStuff.LayerEnum.Wall)
+            {
+
+                Destroy(gameObject);
+            }
+
+        }
+    }
 
 }

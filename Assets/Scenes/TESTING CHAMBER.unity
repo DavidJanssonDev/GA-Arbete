@@ -167,7 +167,7 @@ GameObject:
   - component: {fileID: 126805966}
   - component: {fileID: 126805968}
   - component: {fileID: 126805967}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: 'MAIN WALL TILEMAP '
   m_TagString: Main wall tilemap
   m_Icon: {fileID: 0}
@@ -2395,7 +2395,7 @@ GameObject:
   m_Component:
   - component: {fileID: 803363823}
   - component: {fileID: 803363824}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Rotate Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2539,8 +2539,8 @@ GameObject:
   - component: {fileID: 938955407}
   - component: {fileID: 938955406}
   m_Layer: 5
-  m_Name: Health Text
-  m_TagString: Player Health
+  m_Name: Health
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4599,8 +4599,8 @@ GameObject:
   - component: {fileID: 1396638205}
   - component: {fileID: 1396638204}
   m_Layer: 5
-  m_Name: Damage Text
-  m_TagString: Player Damage
+  m_Name: Damage
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4731,7 +4731,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1443334807}
   - component: {fileID: 1443334808}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player_sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4817,6 +4817,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2892607651115708080, guid: 424609e247fe8d44f97fb0af2660d497, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4975066379313608344, guid: 424609e247fe8d44f97fb0af2660d497, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6339558247069206739, guid: 424609e247fe8d44f97fb0af2660d497, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 7845185586259944811, guid: 424609e247fe8d44f97fb0af2660d497, type: 3}
       propertyPath: EnemyDitectionEnabel
       value: 0
@@ -4882,7 +4894,7 @@ GameObject:
   - component: {fileID: 1507814568}
   - component: {fileID: 1507814575}
   - component: {fileID: 1507814574}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: 'Player '
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -5116,7 +5128,7 @@ Transform:
   m_GameObject: {fileID: 1507814567}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.62, y: 0.61, z: 0}
+  m_LocalPosition: {x: 0.62, y: -1.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5137,6 +5149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Health: 10
+  Damage: 1
   MovementSpeed: 5
 --- !u!114 &1507814575
 MonoBehaviour:
@@ -5976,7 +5989,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1544662599}
   - component: {fileID: 1544662600}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Bullet Transform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
