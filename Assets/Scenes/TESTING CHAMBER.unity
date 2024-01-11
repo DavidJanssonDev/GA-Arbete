@@ -2689,7 +2689,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1595495465}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1046439825
@@ -4810,7 +4811,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 967773744}
     m_Modifications:
     - target: {fileID: 2892607651115708080, guid: 424609e247fe8d44f97fb0af2660d497, type: 3}
       propertyPath: m_Name
@@ -5077,7 +5078,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.1, y: 1.1}
   m_EdgeRadius: 0
 --- !u!50 &1507814572
 Rigidbody2D:
@@ -5115,7 +5116,7 @@ Transform:
   m_GameObject: {fileID: 1507814567}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.62, y: 0.61, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6086,6 +6087,11 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!4 &1595495465 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8691274368433750271, guid: 424609e247fe8d44f97fb0af2660d497, type: 3}
+  m_PrefabInstance: {fileID: 1504801635}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1704634660
 GameObject:
   m_ObjectHideFlags: 0
@@ -9524,4 +9530,3 @@ SceneRoots:
   - {fileID: 672321050}
   - {fileID: 787842159}
   - {fileID: 967773744}
-  - {fileID: 1504801635}
