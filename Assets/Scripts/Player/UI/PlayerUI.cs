@@ -46,16 +46,16 @@ namespace UIStuff
             SetUI();
         }
 
-            
-
-        private void OnCollisionEnter(Collision other)
+        private void OnCollisionEnter2D(Collision2D collision)
         {
-            Debug.Log(other);
+            
+       
+            Debug.Log(collision);
 
-            if (other.gameObject.CompareTag("Enemy"))
+            if (collision.gameObject.CompareTag("Enemy"))
             {
                 string UpdateUIType = "Health";
-                int EnemyDamage = other.transform.GetComponent<EnemyValuesScript>().Damage;
+                int EnemyDamage = collision.transform.GetComponent<EnemyValuesScript>().Damage;
                 PlayerStatsScript.Health -= EnemyDamage;
                 UpdateUI(UpdateUIType, PlayerStatsScript.Health);
             }

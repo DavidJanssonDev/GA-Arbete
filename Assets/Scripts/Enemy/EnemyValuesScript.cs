@@ -17,4 +17,6 @@ public class EnemyValuesScript : MonoBehaviour
     public int Health = 10;
     public float _movmentSpeed;
     public int Damage = 1;
+
+    
 }
