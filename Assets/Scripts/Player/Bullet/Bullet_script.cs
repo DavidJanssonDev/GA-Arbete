@@ -12,20 +12,21 @@ public class Bullet_script : MonoBehaviour
     Vector2 Rb_velocity;
     float Rot_bullet;
     int PlayerDamage;
-    [SerializeField]  float Force;
+    GameObject PlayerObject;
+    [SerializeField] float Force;
 
     private void Awake()    
     {
-
-        PlayerControllerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
-        PlayerValueScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerValueStats>();
+        PlayerObject = GameObject.FindGameObjectWithTag("Player");
+        PlayerControllerScript = PlayerObject.GetComponent<PlayerController>();
+        PlayerValueScript = PlayerObject.GetComponent<PlayerValueStats>();
 
         Rb = GetComponent<Rigidbody2D>();
 
         MousePos = PlayerControllerScript._playerMousePosition;
         PlayerDamage = PlayerValueScript.Damage;
 
-        Vector3 Direction = MousePos - transform.position;
+        Vector3 Direction = MousePos - PlayerObject.transform.position;
         Vector3 Rotation = transform.position - MousePos;
 
 
