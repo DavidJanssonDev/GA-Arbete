@@ -26,7 +26,7 @@ namespace GenerationOfFloorClassStuff
         public void Generate()
         {
             // Import room objects and copy their tilemaps to the main tilemap
-            ImportRoomObjects(roomDoorTile);
+            RoomRelatedStuff(roomDoorTile);
             CopyRoomTilemapsToMainTilemap();
         }
 
@@ -43,26 +43,31 @@ namespace GenerationOfFloorClassStuff
             }
         }
 
+        private void RoomRelatedStuff(Tile roomDoorTile)
+        {
+            for (int roomChildObjectIndex = 0; roomChildObjectIndex < transform.childCount; roomChildObjectIndex++)
+            {
+                Transform gameChild = transform.GetChild(roomChildObjectIndex);
+                if (gameChild.gameObject.layer == (int)LayerStuff.LayerEnum.Room)
+                {
+                    ImportRoomObjects(roomDoorTile, gameChild);
+                    DecabelAllRoomObjets(gameChild);
+                }
+            }
+        }
+
+        private void DecabelAllRoomObjets(Transform roomObject)
+        {
+            roomObject.gameObject.SetActive(false);
+        }
+        
 
 
         // Import room objects and generate Room objects for each room
-        private void ImportRoomObjects(Tile doorTile)
+        private void ImportRoomObjects(Tile doorTile, Transform gameChild)
         {
-            // Import the Room Object in from the grid and generate a Room Object for each room 
-
-
-            for (int childIndex = 0; childIndex < transform.childCount; childIndex++)
-            {
-                Transform gameChild = transform.GetChild(childIndex);
-
-               if (gameChild.gameObject.layer == (int)LayerStuff.LayerEnum.Room)
-               {
-                    // For each Room object makes a new script of it
-                    floorValueScript.RoomList.Add(GenerateRoom(gameChild, true, doorTile));
-               }
-               
-            }
-        
+            Debug.Log(gameChild);
+            floorValueScript.RoomList.Add(GenerateRoom(gameChild, true, doorTile));
         }
 
 
