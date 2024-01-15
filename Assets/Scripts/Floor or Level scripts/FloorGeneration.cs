@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using GenerallStuff;
+using static GenerallStuff.LayerStuff;
 
 namespace GenerationOfFloorClassStuff
 {
@@ -92,7 +93,7 @@ namespace RoomStuff
         private List<Tilemap> RoomTilemaps;
 
         public Tile DoorTile;
-        public Dictionary<string, Door> DoorListPos;
+
 
         public List<Room> ClosestRooms;
         public List<Room> RoomObjectClosestRooms;
@@ -112,14 +113,14 @@ namespace RoomStuff
             RoomTilemaps = new List<Tilemap>();
             RoomObjectClosestRooms = new List<Room>();
             ValueClosestRooms = new List<float>();
-            DoorListPos = new Dictionary<string, Door>();
+
+
             SetTilemaps();
         }
 
         // Method to set tilemaps of the room
         private void SetTilemaps()
         {
-
             foreach (Transform child in RoomTransform)
             {
                 if (child.CompareTag("Wall tilemap") || child.CompareTag("Ground tilemap"))
@@ -131,12 +132,12 @@ namespace RoomStuff
 
         // Method to get the distance to another room
         public float GetDistanceToRoom(Transform targetPoint)
-        {   
-            
+        {
+
             return Vector3.Distance(RoomTransform.position, targetPoint.position);
         }
 
-        
+
         // Methods to generate and sort data about closest rooms
         public void GenerateSoritingRoomData()
         {
@@ -145,7 +146,7 @@ namespace RoomStuff
         }
 
         public void GenerateData()
-        { 
+        {
             foreach (var room in FloorGeneration.floorValueScript.RoomList)
             {
                 ValueClosestRooms.Add(GetDistanceToRoom(room.RoomTransform));
@@ -174,120 +175,97 @@ namespace RoomStuff
             }
         }
 
-       
+
         // Method to copy the tilemap of the room to the main tilemap
         public void CopyTileMap(Tilemap mainWallTilemap, Tilemap mainGroundTilemap)
         {
-            DoorListPos = TilemapScript.GetRoomDoorTilePos(RoomTilemaps, DoorTile);
-            AvailableDoors = DoorListPos.Count;
+            Tilemap WallTilemap = null;
+            Tilemap GroundTilemap = null;
+            Tilemap RespawnTilemap = null;
+            string room = "Room ";
 
-            TilemapScript.CopyTileMapToTilemap(mainWallTilemap, RoomTilemaps.Find(tilemap => tilemap.CompareTag("Wall tilemap")));
-            TilemapScript.CopyTileMapToTilemap(mainGroundTilemap, RoomTilemaps.Find(tilemap => tilemap.CompareTag("Ground tilemap")));
-        }
-    }
-
-    // Class representing a door in a room
-
-    public class Door
-    {
-        public Vector3 DoorPosition;
-        public bool DoorAvailable;
-
-        // Constructor to initialize door properties
-        public Door(Vector3 position, bool available)
-        {
-            DoorPosition = position;
-            DoorAvailable = available;
-        }
-
-        // Method to get the cardinal direction based on a vector
-        public static string GetDirection(Vector3Int vector)
-        {
-            if (vector.y > 0) return "North";
-            if (vector.y < 0) return "South";
-            if (vector.x > 0) return "East";
-            if (vector.x < 0) return "West";
-            return "Not a cardinal direction";
-        }
-    }
-
-    // Class containing static methods related to Tilemaps
-    public class TilemapScript
-    {
-
-        // Method to copy the contents of one tilemap to another
-        public static void CopyTileMapToTilemap(Tilemap tilemapToCopyTo, Tilemap orgTilemap)
-        {
-            var tilemapPos = orgTilemap.transform.position;
-            var bounds = orgTilemap.cellBounds;
-
-            for (int tileX = bounds.x; tileX < bounds.x + bounds.size.x; tileX++)
+            foreach (Tilemap tilemap in RoomTilemaps)
             {
-                for (int tileY = bounds.y; tileY < bounds.y + bounds.size.y; tileY++)
+                room = $"Room {RoomTilemaps.IndexOf(tilemap)}";
+                switch (tilemap.gameObject.layer)
                 {
-                    var cellPosition = new Vector3Int(tileX, tileY, 0);
-                    var sourceTile = orgTilemap.GetTile(cellPosition);
-
-                    if (sourceTile != null)
-                    {
-                        tilemapToCopyTo.SetTile(new Vector3Int(
-                                    Mathf.FloorToInt(tilemapPos.x) + cellPosition.x,
-                                    Mathf.FloorToInt(tilemapPos.y) + cellPosition.y,
-                                    Mathf.FloorToInt(tilemapPos.z) + cellPosition.z)
-                            , sourceTile);
-                    }
+                    case (int)LayerStuff.LayerEnum.Ground: GroundTilemap = tilemap; break;
+                    case (int)LayerStuff.LayerEnum.Wall: WallTilemap = tilemap; break;
+                    case (int)LayerStuff.LayerEnum.Respawn: RespawnTilemap = tilemap; break;
                 }
+            }
+            Debug.Log(room);
+
+            // Check if the tilemaps are not null before copying
+            if (GroundTilemap != null && mainGroundTilemap != null)
+            {
+                if (RespawnTilemap != null)
+                {
+                    Debug.Log("Copy Started: Copy RespawnTilemap");
+                    TilemapScript.CopyTileMapToTilemap(GroundTilemap, RespawnTilemap);
+                    Debug.Log("Copyed RespawnTilemap");
+                }
+
+                Debug.Log("Copy Started: Copy GroundTilemap");
+                TilemapScript.CopyTileMapToTilemap(mainGroundTilemap, GroundTilemap);
+                Debug.Log("Copyed GroundTilemap");
+            }
+            else
+            {
+                Debug.LogError("GroundTilemap or mainGroundTilemap is null.");
+            }
+
+            // Check if the tilemaps are not null before copying
+            if (WallTilemap != null && mainWallTilemap != null)
+            {
+                Debug.Log("Copy Started: Copy WallTilemap");
+                TilemapScript.CopyTileMapToTilemap(mainWallTilemap, WallTilemap);
+                Debug.Log("Copyed Walltilemap");
+            }
+            else
+            {
+                Debug.LogError("WallTilemap or mainWallTilemap is null.");
             }
         }
 
-        // Method to get door positions from a ground tilemap
-        public static Dictionary<string, Door> GetRoomDoorTilePos(List<Tilemap> tilemapList, Tile DoorTile)
+
+
+        // Class containing static methods related to Tilemap
+        public class TilemapScript
         {
-            Dictionary<string, Door> doorList = new();
 
-            var tilemap = tilemapList.Find(tilemap => tilemap.CompareTag("Ground tilemap"));
-            var bounds = tilemap.cellBounds;
-
-            for (int tileX = bounds.x; tileX < bounds.x + bounds.size.x; tileX++)
+            // Method to copy the contents of one tilemap to another
+            public static void CopyTileMapToTilemap(Tilemap tilemapToCopyTo, Tilemap orgTilemap)
             {
-                for (int tileY = bounds.y; tileY < bounds.y + bounds.size.y; tileY++)
+                var tilemapPos = orgTilemap.transform.position;
+                var bounds = orgTilemap.cellBounds;
+
+                for (int tileX = bounds.x; tileX < bounds.x + bounds.size.x; tileX++)
                 {
-                    var cellPosition = new Vector3Int(tileX, tileY, 0);
-                    var sourceTile = tilemap.GetTile(cellPosition);
-
-                    Tile tile = (sourceTile as Tile);
-                    if (sourceTile != null && tile != null && tile.sprite == DoorTile.sprite)
+                    for (int tileY = bounds.y; tileY < bounds.y + bounds.size.y; tileY++)
                     {
-                        string doorDirection = Door.GetDirection(cellPosition);
+                        var cellPosition = new Vector3Int(tileX, tileY, 0);
+                        var sourceTile = orgTilemap.GetTile(cellPosition);
 
-                        // Handle the case where the key already exists in the dictionary
-                        if (doorList.ContainsKey(doorDirection))
+                        if (sourceTile != null)
                         {
-                            int count = 1;
-                            string uniqueKey;
-                            do
-                            {
-                                uniqueKey = $"{doorDirection}_{count}";
-                                count++;
-                            } while (doorList.ContainsKey(uniqueKey));
-
-                            doorDirection = uniqueKey;
+                            tilemapToCopyTo.SetTile(new Vector3Int(
+                                        Mathf.FloorToInt(tilemapPos.x) + cellPosition.x,
+                                        Mathf.FloorToInt(tilemapPos.y) + cellPosition.y,
+                                        Mathf.FloorToInt(tilemapPos.z) + cellPosition.z)
+                                , sourceTile);
                         }
-
-                        doorList.Add(doorDirection, new Door(tilemap.GetCellCenterWorld(cellPosition), true));
                     }
                 }
             }
 
-            return doorList;
-        }
 
-
-        // Method to replace a tile in a tilemap
-        public static void ReplaceTile(Vector3Int cellPosition, Tile replacementTile, Tilemap tilemap)
-        {
-            tilemap.SetTile(cellPosition, replacementTile);
-            tilemap.RefreshTile(cellPosition);
+            // Method to replace a tile in a tilemap
+            public static void ReplaceTile(Vector3Int cellPosition, Tile replacementTile, Tilemap tilemap)
+            {
+                tilemap.SetTile(cellPosition, replacementTile);
+                tilemap.RefreshTile(cellPosition);
+            }
         }
     }
 }

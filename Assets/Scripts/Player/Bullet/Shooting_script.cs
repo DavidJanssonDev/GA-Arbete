@@ -47,7 +47,6 @@ public class Shooting_2 : MonoBehaviour
 
         if (_playerShoot && _playerCanShoot)
         {
-            Debug.Log("Shoot");
             _playerCanShoot = false;
             Instantiate(bullet, shooting_point.position, Quaternion.identity);
         }

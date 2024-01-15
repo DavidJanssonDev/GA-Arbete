@@ -34,6 +34,6 @@ namespace GenerallStuff
     class LayerStuff
     { 
         
-        public enum LayerEnum { ENEMY = 7, PLAYER = 6, Room = 9, Wall = 10};
+        public enum LayerEnum { ENEMY = 7, PLAYER = 6, Room = 9, Wall = 10, Ground = 12, Respawn = 11};
     }
 }

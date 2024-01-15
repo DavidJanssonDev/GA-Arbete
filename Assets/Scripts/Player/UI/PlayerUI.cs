@@ -63,13 +63,8 @@ namespace UIStuff
         private void UpdateUI(string TypeOfUI, object newStat)
         {
             TextMeshProUGUI TextUI = TextObjectDictanry[TypeOfUI];
-            Debug.Log(newStat);
             TextUI.text = $"{TypeOfUI}: {newStat}";
-            
-
         }
-
-
     }
     
 }
