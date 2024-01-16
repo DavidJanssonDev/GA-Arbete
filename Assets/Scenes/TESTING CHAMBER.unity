@@ -3571,7 +3571,7 @@ GameObject:
   - component: {fileID: 531627994}
   m_Layer: 12
   m_Name: Ground Room
-  m_TagString: Untagged
+  m_TagString: Ground tilemap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6105,8 +6105,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 531627993}
-  - {fileID: 1923768318}
   - {fileID: 1309989533}
+  - {fileID: 1923768318}
   m_Father: {fileID: 909853853}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &787842158
@@ -8310,7 +8310,7 @@ GameObject:
   - component: {fileID: 1309989534}
   m_Layer: 10
   m_Name: Wall Room
-  m_TagString: Untagged
+  m_TagString: Wall tilemap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

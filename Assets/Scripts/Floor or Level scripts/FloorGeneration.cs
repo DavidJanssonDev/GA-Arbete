@@ -67,7 +67,6 @@ namespace GenerationOfFloorClassStuff
         // Import room objects and generate Room objects for each room
         private void ImportRoomObjects(Tile doorTile, Transform gameChild)
         {
-            Debug.Log(gameChild);
             floorValueScript.RoomList.Add(GenerateRoom(gameChild, true, doorTile));
         }
 
@@ -90,9 +89,11 @@ namespace RoomStuff
         public string Name;
         public bool CanContainEnemies;
         public Transform RoomTransform;
-        private List<Tilemap> RoomTilemaps;
+        
+        private readonly List<Tilemap> RoomTilemaps;
 
         public Tile DoorTile;
+
 
 
         public List<Room> ClosestRooms;
@@ -123,7 +124,9 @@ namespace RoomStuff
         {
             foreach (Transform child in RoomTransform)
             {
-                if (child.CompareTag("Wall tilemap") || child.CompareTag("Ground tilemap"))
+                if (child.gameObject.layer == (int)LayerStuff.LayerEnum.Ground ||
+                    child.gameObject.layer == (int)LayerStuff.LayerEnum.Wall ||
+                    child.gameObject.layer == (int)LayerStuff.LayerEnum.Respawn)
                 {
                     RoomTilemaps.Add(child.GetComponent<Tilemap>());
                 }
@@ -182,45 +185,53 @@ namespace RoomStuff
             Tilemap WallTilemap = null;
             Tilemap GroundTilemap = null;
             Tilemap RespawnTilemap = null;
-            string room = "Room ";
 
-            foreach (Tilemap tilemap in RoomTilemaps)
+            foreach (Tilemap tilemapChild in RoomTilemaps)
             {
-                room = $"Room {RoomTilemaps.IndexOf(tilemap)}";
-                switch (tilemap.gameObject.layer)
+                int layerValue = tilemapChild.gameObject.layer;
+                Debug.Log($"Tilemap Layer: {layerValue}");
+
+                if (layerValue == (int)LayerStuff.LayerEnum.Ground)
                 {
-                    case (int)LayerStuff.LayerEnum.Ground: GroundTilemap = tilemap; break;
-                    case (int)LayerStuff.LayerEnum.Wall: WallTilemap = tilemap; break;
-                    case (int)LayerStuff.LayerEnum.Respawn: RespawnTilemap = tilemap; break;
+                    GroundTilemap = tilemapChild;
+                }
+                else if (layerValue == (int)LayerStuff.LayerEnum.Wall)
+                {
+                    WallTilemap = tilemapChild;
+                }
+                else if (layerValue == (int)LayerStuff.LayerEnum.Respawn)
+                {
+                    RespawnTilemap = tilemapChild;
                 }
             }
-            Debug.Log(room);
 
-            // Check if the tilemaps are not null before copying
+          
+            if (RespawnTilemap != null)
+            {
+                Debug.Log("___________________________________________________");
+                Debug.Log("Copy Started: Copy RespawnTilemap to GroundTilemap");
+                TilemapScript.CopyTileMapToTilemap(GroundTilemap, RespawnTilemap);
+                Debug.Log("Copy Completed: RespawnTilemap copied to GroundTilemap");
+            }
+
             if (GroundTilemap != null && mainGroundTilemap != null)
             {
-                if (RespawnTilemap != null)
-                {
-                    Debug.Log("Copy Started: Copy RespawnTilemap");
-                    TilemapScript.CopyTileMapToTilemap(GroundTilemap, RespawnTilemap);
-                    Debug.Log("Copyed RespawnTilemap");
-                }
-
-                Debug.Log("Copy Started: Copy GroundTilemap");
+                Debug.Log("___________________________________________________");
+                Debug.Log("Copy Started: Copy GroundTilemap to MainGroundTilemap");
                 TilemapScript.CopyTileMapToTilemap(mainGroundTilemap, GroundTilemap);
-                Debug.Log("Copyed GroundTilemap");
+                Debug.Log("Copy Completed: GroundTilemap copied to MainGroundTilemap");
             }
             else
             {
                 Debug.LogError("GroundTilemap or mainGroundTilemap is null.");
             }
 
-            // Check if the tilemaps are not null before copying
             if (WallTilemap != null && mainWallTilemap != null)
             {
-                Debug.Log("Copy Started: Copy WallTilemap");
+                Debug.Log("___________________________________________________");
+                Debug.Log("Copy Started: Copy WallTilemap to MainWallTilemap");
                 TilemapScript.CopyTileMapToTilemap(mainWallTilemap, WallTilemap);
-                Debug.Log("Copyed Walltilemap");
+                Debug.Log("Copy Completed: WallTilemap copied to MainWallTilemap");
             }
             else
             {
