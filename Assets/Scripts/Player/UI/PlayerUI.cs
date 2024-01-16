@@ -36,19 +36,10 @@ namespace UIStuff
             SetUI();
         }
 
-        private void OnCollisionEnter2D(Collision2D collision)
-        {
-            if (collision.gameObject.layer == (int)LayerEnum.ENEMY)
-            {
-                string UpdateUIType = "Health";
-                int EnemyDamage = collision.transform.GetComponent<EnemyValuesScript>().Damage;
-                PlayerStatsScript.Health -= EnemyDamage;
-                UpdateUI(UpdateUIType, PlayerStatsScript.Health);
-            }
-        }
+       
 
 
-        private void SetUI()
+        public void SetUI()
         {
             List<string> keyList = new(TextObjectDictanry.Keys);
             for (int index = 0; index < keyList.Count; index++)
@@ -60,7 +51,7 @@ namespace UIStuff
             }
         }
 
-        private void UpdateUI(string TypeOfUI, object newStat)
+        public void UpdateUI(string TypeOfUI, object newStat)
         {
             TextMeshProUGUI TextUI = TextObjectDictanry[TypeOfUI];
             TextUI.text = $"{TypeOfUI}: {newStat}";
