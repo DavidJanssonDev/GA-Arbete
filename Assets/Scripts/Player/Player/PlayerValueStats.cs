@@ -8,10 +8,11 @@ namespace PlayerStats
     public class PlayerValueStats : MonoBehaviour
     {
         public int Health = 10;
+        
         public int Damage = 1;
         public float MovementSpeed = 5f;
         public Vector3 RespawnPoint = Vector3.zero;
-
+        public bool GameOver = false;
     }
 
 }

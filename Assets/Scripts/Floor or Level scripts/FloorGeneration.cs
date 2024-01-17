@@ -189,7 +189,6 @@ namespace RoomStuff
             foreach (Tilemap tilemapChild in RoomTilemaps)
             {
                 int layerValue = tilemapChild.gameObject.layer;
-                Debug.Log($"Tilemap Layer: {layerValue}");
 
                 if (layerValue == (int)LayerStuff.LayerEnum.Ground)
                 {
@@ -208,18 +207,12 @@ namespace RoomStuff
           
             if (RespawnTilemap != null)
             {
-                Debug.Log("___________________________________________________");
-                Debug.Log("Copy Started: Copy RespawnTilemap to GroundTilemap");
                 TilemapScript.CopyTileMapToTilemap(GroundTilemap, RespawnTilemap);
-                Debug.Log("Copy Completed: RespawnTilemap copied to GroundTilemap");
             }
 
             if (GroundTilemap != null && mainGroundTilemap != null)
             {
-                Debug.Log("___________________________________________________");
-                Debug.Log("Copy Started: Copy GroundTilemap to MainGroundTilemap");
                 TilemapScript.CopyTileMapToTilemap(mainGroundTilemap, GroundTilemap);
-                Debug.Log("Copy Completed: GroundTilemap copied to MainGroundTilemap");
             }
             else
             {
@@ -228,10 +221,7 @@ namespace RoomStuff
 
             if (WallTilemap != null && mainWallTilemap != null)
             {
-                Debug.Log("___________________________________________________");
-                Debug.Log("Copy Started: Copy WallTilemap to MainWallTilemap");
                 TilemapScript.CopyTileMapToTilemap(mainWallTilemap, WallTilemap);
-                Debug.Log("Copy Completed: WallTilemap copied to MainWallTilemap");
             }
             else
             {

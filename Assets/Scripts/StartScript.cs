@@ -11,22 +11,25 @@ namespace GenerallStuff
     {
         private FloorGeneration FloorGenerationScript;
         private PlayerUI PlayerUIScript;
+        private PlayerHP PlayerHPScript;
 
         [SerializeField] private GameObject _PlayerObject;
         [SerializeField] private GameObject _GameMapObject;
+
 
         private void Awake()
         {
             PlayerUIScript = _PlayerObject.GetComponent<PlayerUI>();
             FloorGenerationScript = _GameMapObject.GetComponent<FloorGeneration>();
+            PlayerHPScript = _PlayerObject.GetComponent<PlayerHP>();
         }
 
         private void Start()
         {
-
+            PlayerHPScript.SetUp();
             PlayerUIScript.GenerateTextMeshDictanry();
             FloorGenerationScript.Generate();
-
+            
         }
 
     }

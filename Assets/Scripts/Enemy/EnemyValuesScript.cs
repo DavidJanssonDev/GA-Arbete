@@ -1,3 +1,4 @@
+using PlayerStats;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,7 +12,8 @@ public class EnemyValuesScript : MonoBehaviour
     public bool _PlayerDitected = false;
     public bool _DitectionEnabled = false;
     public bool EnemyDitectionEnabel = true;
-    public GameObject Player = null;
+    public GameObject Player;
+    public PlayerValueStats PlayerStats;
 
     [Header("ENEMY STATS")]
     public int Health = 10;

@@ -122,7 +122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60a3703a047149c4d9462104380ed81d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _DitectionObject: {fileID: 4975066379313608344}
+  DitectionObject: {fileID: 4975066379313608344}
 --- !u!114 &4885507893752180544
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135,7 +135,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41b1f2db8c823aa40b7942cc5f5d9a31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lastKnowPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &7845185586259944811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,8 +150,12 @@ MonoBehaviour:
   _DitectionRange: 4
   _PlayerDitected: 0
   _DitectionEnabled: 1
+  EnemyDitectionEnabel: 1
   Player: {fileID: 0}
+  PlayerStats: {fileID: 0}
+  Health: 10
   _movmentSpeed: 3
+  Damage: 1
 --- !u!1 &4975066379313608344
 GameObject:
   m_ObjectHideFlags: 0

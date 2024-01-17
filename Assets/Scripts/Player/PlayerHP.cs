@@ -1,14 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static GenerallStuff.LayerStuff;
+using GenerallStuff;
 using UIStuff;
 using PlayerStats;
 
 public class PlayerHP : MonoBehaviour
 {
-    public PlayerUI PlayerUIScript;
-    public PlayerValueStats PlayerValueStats;
+    private PlayerUI PlayerUIScript;
+    private PlayerValueStats PlayerValueStats;
 
     public void SetUp()
     {
@@ -20,12 +20,18 @@ public class PlayerHP : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.layer == (int)LayerEnum.ENEMY)
+        if (collision.gameObject.layer == (int) LayerStuff.LayerEnum.ENEMY )
         {
-            int EnemyDamage = collision.transform.GetComponent<EnemyValuesScript>().Damage;
-            PlayerValueStats.Health -= EnemyDamage;
-            PlayerUIScript.UpdateUI("Health", PlayerValueStats.Health);
-            
+            PlayerValueStats.Health -= collision.gameObject.GetComponent<EnemyValuesScript>().Damage;
+        }
+    }
+
+
+    private void Update()
+    {
+        if (PlayerValueStats.Health <= 0 ) 
+        {
+            PlayerValueStats.GameOver = true;
         }
     }
 

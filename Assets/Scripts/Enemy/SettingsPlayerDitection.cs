@@ -6,23 +6,22 @@ using UnityEngine;
 public class SettingsPlayerDitection : MonoBehaviour
 {
     [Header("DITECTION SETTINGS ")]
-    [SerializeField] private GameObject _DitectionObject;
-     EnemyValuesScript _enemyValuesScript;
+    [SerializeField] private GameObject DitectionObject;
+    private EnemyValuesScript EnemyValuesScript;
 
 
     private void Awake()
     {
-        
-        _enemyValuesScript = GetComponent<EnemyValuesScript>();
-        float _range = _enemyValuesScript._DitectionRange * 2;
-        _DitectionObject.transform.localScale = new Vector3(_range, _range);
+
+        EnemyValuesScript = GetComponent<EnemyValuesScript>();
+        float _range = EnemyValuesScript._DitectionRange * 2;
+        EnemyValuesScript.transform.localScale = new Vector3(_range, _range);
        
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        _DitectionObject.SetActive(_enemyValuesScript._DitectionEnabled);
-      
+    private void Update()
+    {   
+         DitectionObject.SetActive(EnemyValuesScript._DitectionEnabled);
     }
 }

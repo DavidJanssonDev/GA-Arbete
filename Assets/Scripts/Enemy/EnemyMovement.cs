@@ -1,33 +1,37 @@
+using PlayerStats;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
-    private EnemyValuesScript enemyValuesScript;
-    private Vector3 lastKnowPosition;
+    private EnemyValuesScript EnemyValuesScript;
+    private PlayerValueStats PlayerValuesScript;
+    private Vector3 LastKnowPosition;
 
     private void Awake()
     {
-        enemyValuesScript = GetComponent<EnemyValuesScript>();
-        enemyValuesScript.Player = GameObject.FindGameObjectWithTag("Player");
-        lastKnowPosition = transform.position;
+        EnemyValuesScript = GetComponent<EnemyValuesScript>();
+        EnemyValuesScript.PlayerStats = EnemyValuesScript.Player.GetComponent<PlayerValueStats>();
+        LastKnowPosition = transform.position;
     }
 
     private void Update()
     {
-        if (enemyValuesScript._PlayerDitected)
+        Debug.Log(EnemyValuesScript.Player);
+        Debug.Log(PlayerValuesScript);
+        if (EnemyValuesScript.PlayerStats.GameOver == false)
         {
-            lastKnowPosition = enemyValuesScript.Player.transform.position;
+            if (EnemyValuesScript._PlayerDitected)
+            {
+                LastKnowPosition = EnemyValuesScript.Player.transform.position;
+            }
+            MoveEnemy();
         }
-
-        MoveEnemy();
-
-
     }
 
     private void MoveEnemy()
     {
-        transform.position = Vector3.MoveTowards(transform.position, lastKnowPosition, enemyValuesScript._movmentSpeed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, LastKnowPosition, EnemyValuesScript._movmentSpeed * Time.deltaTime);
     }
  }

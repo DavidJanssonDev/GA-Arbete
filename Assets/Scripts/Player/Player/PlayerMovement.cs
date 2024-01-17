@@ -6,35 +6,34 @@ using PlayerStats;
 public class PlayerMovement : MonoBehaviour
 {
     // Player 
-    private Rigidbody2D _playerRigidbody2D;
-    private PlayerController _inputConttroller;
-    private PlayerValueStats _playerValueStats;
-
-    // Player Movement Speed
-    [SerializeField] 
+    private Rigidbody2D PlayreRIgidBody2D;
+    private PlayerController InputConttroller;
+    private PlayerValueStats PlayerValueStatsScript;
     
-
     // Variabels for smoth player movement
-    private Vector2 _playerMovement;
-    private Vector2 _movementSmoothedInput;
-    private Vector2 _movementInputSmoothVelocity;
+    private Vector2 PlayerMovementDirection;
+    private Vector2 MovementSmoothedInput;
+    private Vector2 MvementInputSmoothVelocity;
 
     private void Awake()
     {
-        _playerRigidbody2D = GetComponent<Rigidbody2D>();
-        _inputConttroller = GetComponent<PlayerController>();
-        _playerValueStats = GetComponent<PlayerValueStats>();
+        PlayreRIgidBody2D = GetComponent<Rigidbody2D>();
+        InputConttroller = GetComponent<PlayerController>();
+        PlayerValueStatsScript = GetComponent<PlayerValueStats>();
     }
 
     private void Update()
     {
-        _playerMovement = _inputConttroller.rawPlayerMovementControlls;
+        PlayerMovementDirection = InputConttroller.rawPlayerMovementControlls;
     }
 
     // Update is called once per frame
     private void FixedUpdate()
     {
-        _movementSmoothedInput = Vector2.SmoothDamp( _movementSmoothedInput, _playerMovement, ref _movementInputSmoothVelocity,0.1f );
-        _playerRigidbody2D.velocity = _movementSmoothedInput * _playerValueStats.MovementSpeed;
+        if (PlayerValueStatsScript.GameOver == false)
+        {
+            MovementSmoothedInput = Vector2.SmoothDamp(MovementSmoothedInput, PlayerMovementDirection, ref MvementInputSmoothVelocity, 0.1f );
+            PlayreRIgidBody2D.velocity = MovementSmoothedInput * PlayerValueStatsScript.MovementSpeed;
+        }
     }
 }
