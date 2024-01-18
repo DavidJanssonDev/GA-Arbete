@@ -6,32 +6,35 @@ using UnityEngine;
 public class EnemyMovement : MonoBehaviour
 {
     private EnemyValuesScript EnemyValuesScript;
-    private PlayerValueStats PlayerValuesScript;
-    private Vector3 LastKnowPosition;
+    private Transform Player;
+    private Vector3 LastKnownPosition;
 
     private void Awake()
     {
+
+        Player = GameObject.FindGameObjectWithTag("Player").transform;
+
         EnemyValuesScript = GetComponent<EnemyValuesScript>();
-        EnemyValuesScript.PlayerStats = EnemyValuesScript.Player.GetComponent<PlayerValueStats>();
-        LastKnowPosition = transform.position;
+        EnemyValuesScript.PlayerStats = Player.GetComponent<PlayerValueStats>();
+        LastKnownPosition = transform.position;
     }
 
     private void Update()
     {
-        Debug.Log(EnemyValuesScript.Player);
-        Debug.Log(PlayerValuesScript);
-        if (EnemyValuesScript.PlayerStats.GameOver == false)
+        if (EnemyValuesScript.PlayerDitected && EnemyValuesScript.PlayerStats.GameOver == false)
         {
-            if (EnemyValuesScript._PlayerDitected)
-            {
-                LastKnowPosition = EnemyValuesScript.Player.transform.position;
-            }
             MoveEnemy();
         }
     }
 
-    private void MoveEnemy()
+    public void MoveEnemy()
     {
-        transform.position = Vector3.MoveTowards(transform.position, LastKnowPosition, EnemyValuesScript._movmentSpeed * Time.deltaTime);
+        Debug.Log("Move Enemy");
+
+        // Update the LastKnownPosition only when the player is detected
+        LastKnownPosition = Player.transform.position;
+
+        // Move towards the LastKnownPosition gradually
+        transform.position = Vector3.MoveTowards(transform.position, LastKnownPosition, EnemyValuesScript.MovmentSpeed * Time.deltaTime);
     }
- }
+}

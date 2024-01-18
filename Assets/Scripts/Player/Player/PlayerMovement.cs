@@ -24,7 +24,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        PlayerMovementDirection = InputConttroller.rawPlayerMovementControlls;
+        PlayerMovementDirection = InputConttroller.RawPlayerMovementControlls;
     }
 
     // Update is called once per frame

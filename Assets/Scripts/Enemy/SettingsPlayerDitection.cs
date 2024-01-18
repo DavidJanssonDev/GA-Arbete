@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class SettingsPlayerDitection : MonoBehaviour
 {
-    [Header("DITECTION SETTINGS ")]
-    [SerializeField] private GameObject DitectionObject;
+    [Header("Detection SETTINGS ")]
+    [SerializeField] private GameObject DetectionObject;
     private EnemyValuesScript EnemyValuesScript;
 
 
@@ -14,14 +14,19 @@ public class SettingsPlayerDitection : MonoBehaviour
     {
 
         EnemyValuesScript = GetComponent<EnemyValuesScript>();
-        float _range = EnemyValuesScript._DitectionRange * 2;
-        EnemyValuesScript.transform.localScale = new Vector3(_range, _range);
+        float _range = EnemyValuesScript.DetectionRange * 2;
+        EnemyValuesScript.EnemyPlayerDetectionRange.transform.localScale = new Vector3(_range, _range);
        
     }
 
     // Update is called once per frame
     private void Update()
-    {   
-         DitectionObject.SetActive(EnemyValuesScript._DitectionEnabled);
+    {
+        if (EnemyValuesScript.PlayerStats.GameOver == false)
+        {
+            DetectionObject.SetActive(EnemyValuesScript.DetectionEnabled);
+        }
+
     }
+ 
 }

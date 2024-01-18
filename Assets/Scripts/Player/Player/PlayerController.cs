@@ -1,3 +1,4 @@
+using PlayerStats;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,41 +6,43 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    Camera _camera;
-    Vector2 rawPlayerMousePosition;
+    private Camera MainCamera;
+    private Vector2 RawPlayerMousePosition;
+    private PlayerValueStats PlayerValueScript;
 
-    public Vector3 _playerMousePosition;
-    public Vector2 rawPlayerMovementControlls;
-    public bool _playerFired;
+    public Vector3 PlayerMousePosition;
+    public Vector2 RawPlayerMovementControlls;
+    public bool PlayerFired;
 
 
     private void Awake()
     {
-        _camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+        MainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+        PlayerValueScript = GetComponent<PlayerValueStats>();
     }
 
 
     public void Movement(InputAction.CallbackContext context)
     {
-        rawPlayerMovementControlls = context.ReadValue<Vector2>();
+        RawPlayerMovementControlls = context.ReadValue<Vector2>();
     }
 
     public void MouseMovement(InputAction.CallbackContext context)
-    { 
-        rawPlayerMousePosition = context.ReadValue<Vector2>();
+    {
+        RawPlayerMousePosition = context.ReadValue<Vector2>();
     }
 
     public void PlayerShooting(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && PlayerValueScript.GameOver == false)
         {
-            _playerFired = context.ReadValueAsButton();
+            PlayerFired = context.ReadValueAsButton();
         }
     }
 
    
     private void Update()
     {
-        _playerMousePosition = _camera.ScreenToWorldPoint(new Vector3(rawPlayerMousePosition.x, rawPlayerMousePosition.y, _camera.transform.position.y));
+        PlayerMousePosition = MainCamera.ScreenToWorldPoint(new Vector3(RawPlayerMousePosition.x, RawPlayerMousePosition.y, MainCamera.transform.position.y));
     }
 }

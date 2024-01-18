@@ -8,46 +8,46 @@ public class Shooting_2 : MonoBehaviour
     [SerializeField] Transform shooting_point;
 
     // Shooting timer 
-    bool _playerCanShoot;
+    bool PlayerCanShoot;
     float _timer;
     public float _timeBetween;
 
 
     //  Getting the values from another script
-    PlayerController _playerValueScript;
-    bool _playerShoot;
-    Vector3 _mousePos;
+    PlayerController PlayerValueScript;
+    bool PlayerShoot;
+    Vector3 MousePos;
     
     
     // Start is called before the first frame update
     void Start()
     {
-        _playerValueScript = transform.parent.GetComponent<PlayerController>();
+        PlayerValueScript = transform.parent.GetComponent<PlayerController>();
         
     }
 
     // Update is called once per frame
     void Update()
     {
-        _playerShoot = _playerValueScript._playerFired;
-        _mousePos = _playerValueScript._playerMousePosition;
-        Vector3 rotation = _mousePos - transform.position;
+        PlayerShoot = PlayerValueScript.PlayerFired;
+        MousePos = PlayerValueScript.PlayerMousePosition;
+        Vector3 rotation = MousePos - transform.position;
         float rotZ = Mathf.Atan2(rotation.y, rotation.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0,0,rotZ);
 
-        if (!_playerCanShoot)
+        if (!PlayerCanShoot)
         {
             _timer += Time.deltaTime;
             if (_timer > _timeBetween)
             {
-                _playerCanShoot = true;
+                PlayerCanShoot = true;
                 _timer = 0;
             }
         }
 
-        if (_playerShoot && _playerCanShoot)
+        if (PlayerShoot && PlayerCanShoot)
         {
-            _playerCanShoot = false;
+            PlayerCanShoot = false;
             Instantiate(bullet, shooting_point.position, Quaternion.identity);
         }
     }
