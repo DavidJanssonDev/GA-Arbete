@@ -56,9 +56,9 @@ public class Bullet_script : MonoBehaviour
 
     }
 
-
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
+
         GameObject collidedObject = collision.gameObject;
         if (collidedObject.layer == (int)LayerStuff.LayerEnum.ENEMY)
         {
@@ -68,7 +68,6 @@ public class Bullet_script : MonoBehaviour
 
             if (EnemyStats.Health <= 0)
             {
-
                 Destroy(collidedObject);
             }
 

@@ -9633,6 +9633,14 @@ PrefabInstance:
       value: 1000000
       objectReference: {fileID: 0}
     - target: {fileID: 2718047980353406958, guid: 424609e247fe8d44f97fb0af2660d497, type: 3}
+      propertyPath: m_LinearDrag
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2718047980353406958, guid: 424609e247fe8d44f97fb0af2660d497, type: 3}
+      propertyPath: m_AngularDrag
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2718047980353406958, guid: 424609e247fe8d44f97fb0af2660d497, type: 3}
       propertyPath: m_UseAutoMass
       value: 0
       objectReference: {fileID: 0}
@@ -9658,7 +9666,7 @@ PrefabInstance:
       objectReference: {fileID: 1890627926}
     - target: {fileID: 7845185586259944811, guid: 424609e247fe8d44f97fb0af2660d497, type: 3}
       propertyPath: MovmentSpeed
-      value: 5
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 7845185586259944811, guid: 424609e247fe8d44f97fb0af2660d497, type: 3}
       propertyPath: DetectionDelay
@@ -9681,8 +9689,16 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7845185586259944811, guid: 424609e247fe8d44f97fb0af2660d497, type: 3}
+      propertyPath: PlayerGameObject
+      value: 
+      objectReference: {fileID: 1507814573}
+    - target: {fileID: 7845185586259944811, guid: 424609e247fe8d44f97fb0af2660d497, type: 3}
       propertyPath: EnemyDitectionEnabel
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7845185586259944811, guid: 424609e247fe8d44f97fb0af2660d497, type: 3}
+      propertyPath: DetectionRangeFromPlayer
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7845185586259944811, guid: 424609e247fe8d44f97fb0af2660d497, type: 3}
       propertyPath: EnemyPlayerDitectionRange
@@ -9694,15 +9710,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8691274368433750271, guid: 424609e247fe8d44f97fb0af2660d497, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.06692052
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8691274368433750271, guid: 424609e247fe8d44f97fb0af2660d497, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.6369948
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8691274368433750271, guid: 424609e247fe8d44f97fb0af2660d497, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.179157
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8691274368433750271, guid: 424609e247fe8d44f97fb0af2660d497, type: 3}
       propertyPath: m_LocalRotation.w
@@ -9710,15 +9726,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8691274368433750271, guid: 424609e247fe8d44f97fb0af2660d497, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8691274368433750271, guid: 424609e247fe8d44f97fb0af2660d497, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8691274368433750271, guid: 424609e247fe8d44f97fb0af2660d497, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8691274368433750271, guid: 424609e247fe8d44f97fb0af2660d497, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -9991,7 +10007,7 @@ Transform:
   m_GameObject: {fileID: 1507814567}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.62, y: -1.2, z: 0}
+  m_LocalPosition: {x: -0.5, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10013,7 +10029,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Health: 10
   Damage: 1
-  MovementSpeed: 5
+  MovementSpeed: 6
   RespawnPoint: {x: 0, y: 0, z: 0}
   GameOver: 0
 --- !u!114 &1507814575

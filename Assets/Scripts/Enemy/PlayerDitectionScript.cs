@@ -3,69 +3,41 @@ using System.Collections.Generic;
 using UnityEngine;
 using GenerallStuff;
 
-public class PlayerDitectionScript : MonoBehaviour
+namespace ENEMYDECTECTION
 {
-    EnemyValuesScript EnemyValuesScript;
-    EnemyMovement EnemyMovementScript;
-
-    
-    
-    
-    
-    private float lastDetectionTime;
-    private void Awake()
+    public class PlayerDitectionScript : MonoBehaviour
     {
-        EnemyValuesScript = GetComponent<EnemyValuesScript>();
-        EnemyMovementScript = GetComponent<EnemyMovement>();
-    }
+        private EnemyValuesScript EnemyValuesScript;
+        private EnemyMovement EnemyMovementScript;
 
-    private void OnDrawGizmosSelected()
-    {
-        if (!Application.isPlaying) return;
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, EnemyValuesScript.DetectionRange);
-    }
 
-    private void OnTriggerEnter2D(Collider2D gameobject)
-    {
-        if (CanDetectPlayer(gameobject))
+        private void Awake()
         {
-            EnemyValuesScript.PlayerDitected = true;
-            StartCoroutine(DelayedMoveEnemy());
-        }
-    }
+            EnemyMovementScript = GetComponent<EnemyMovement>();
+            EnemyValuesScript = GetComponent<EnemyValuesScript>();
 
-    private void OnTriggerExit2D(Collider2D gameobject)
-    {
-        if (gameobject.gameObject.layer == (int)LayerStuff.LayerEnum.PLAYER && EnemyValuesScript.EnemyDetectionEnabel)
-        {
-            EnemyValuesScript.PlayerDitected = false;
-        }
-    }
-
-    private bool CanDetectPlayer(Collider2D gameobject)
-    {
-        if (gameobject.gameObject.layer == (int)LayerStuff.LayerEnum.PLAYER &&
-            EnemyValuesScript.EnemyDetectionEnabel &&
-            Time.time - lastDetectionTime > EnemyValuesScript.DetectionDelay &&
-            Vector2.Distance(transform.position, gameobject.transform.position) <= EnemyValuesScript.DetectionRange)
-        {
-            lastDetectionTime = Time.time;
-            Debug.Log("Player detected!");
-            return true;
+            Debug.Log(EnemyValuesScript);
+            Debug.Log(EnemyMovementScript);
         }
 
-        return false;
-    }
 
-
-    private IEnumerator DelayedMoveEnemy()
-    {
-        yield return new WaitForSeconds(EnemyValuesScript.DetectionDelay);
-        if (EnemyValuesScript.PlayerDitected)
+        private void Update()
         {
-            EnemyMovementScript.MoveEnemy();
+            if (EnemyMovementScript != null && EnemyMovementScript != null)
+
+                if (Vector2.Distance(EnemyValuesScript.PlayerGameObject.transform.position, transform.position) <= EnemyValuesScript.DetectionRangeFromPlayer)
+                {
+                    // STUFF IF THE PLAYER ARE DETECTED
+                    EnemyValuesScript.PlayerDitected = true;
+                    EnemyValuesScript.LastKnownPosition = EnemyValuesScript.PlayerGameObject.transform;
+
+                }
+                else
+                {
+                    // STUFF IF THE PLAYER ARE NOT DETECTED
+                    EnemyValuesScript.PlayerDitected = false;
+
+                }
         }
     }
-
 }
