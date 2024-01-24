@@ -22,7 +22,9 @@ public class PlayerHP : MonoBehaviour
     {
         if (collision.gameObject.layer == (int) LayerStuff.LayerEnum.ENEMY )
         {
+            Debug.Log("Damaged by Enemy");
             PlayerValueStats.Health -= collision.gameObject.GetComponent<EnemyValuesScript>().Damage;
+            PlayerUIScript.UpdateUI("Health", PlayerValueStats.Health);
         }
     }
 

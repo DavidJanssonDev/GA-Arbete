@@ -6,7 +6,7 @@ using PlayerStats;
 public class PlayerMovement : MonoBehaviour
 {
     // Player 
-    private Rigidbody2D PlayreRIgidBody2D;
+    private Rigidbody2D PlayerRigidBody2D;
     private PlayerController InputConttroller;
     private PlayerValueStats PlayerValueStatsScript;
     
@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
-        PlayreRIgidBody2D = GetComponent<Rigidbody2D>();
+        PlayerRigidBody2D = GetComponent<Rigidbody2D>();
         InputConttroller = GetComponent<PlayerController>();
         PlayerValueStatsScript = GetComponent<PlayerValueStats>();
     }
@@ -33,7 +33,11 @@ public class PlayerMovement : MonoBehaviour
         if (PlayerValueStatsScript.GameOver == false)
         {
             MovementSmoothedInput = Vector2.SmoothDamp(MovementSmoothedInput, PlayerMovementDirection, ref MvementInputSmoothVelocity, 0.1f );
-            PlayreRIgidBody2D.velocity = MovementSmoothedInput * PlayerValueStatsScript.MovementSpeed;
+            PlayerRigidBody2D.velocity = MovementSmoothedInput * PlayerValueStatsScript.MovementSpeed;
+        }
+        else
+        {
+            PlayerRigidBody2D.velocity = new(0, 0);
         }
     }
 }

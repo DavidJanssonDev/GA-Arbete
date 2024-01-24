@@ -14,7 +14,7 @@ public class EnemyMovement : MonoBehaviour
 
     private void Update()
     {
-        if (EnemyValuesScript != null && EnemyValuesScript.PlayerDitected)
+        if (EnemyValuesScript != null && EnemyValuesScript.PlayerDitected && EnemyValuesScript.PlayerGameObject.GetComponent<PlayerValueStats>().GameOver != true)
         {
             MoveEnemy();
         }
@@ -22,8 +22,6 @@ public class EnemyMovement : MonoBehaviour
 
     private void MoveEnemy()
     {
-        Debug.Log("Move Enemy");
-
         // Move towards the LastKnownPosition gradually
         transform.position = Vector3.MoveTowards(transform.position, EnemyValuesScript.LastKnownPosition.position, EnemyValuesScript.MovmentSpeed * Time.deltaTime);
     }
