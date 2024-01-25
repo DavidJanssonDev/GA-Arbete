@@ -20,27 +20,11 @@ public class PlayerHP : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.layer == (int) LayerStuff.LayerEnum.ENEMY )
+        if (collision.gameObject.layer == (int)LayerStuff.LayerEnum.ENEMY)
         {
             Debug.Log("Damaged by Enemy");
             PlayerValueStats.Health -= collision.gameObject.GetComponent<EnemyValuesScript>().Damage;
             PlayerUIScript.UpdateUI("Health", PlayerValueStats.Health);
         }
-    }
-
-
-    private void Update()
-    {
-        if (PlayerValueStats.Health <= 0 ) 
-        {
-            PlayerValueStats.GameOver = true;
-        }
-    }
-
-
-
-    public void PlayerIsDead()
-    {
-
     }
 }

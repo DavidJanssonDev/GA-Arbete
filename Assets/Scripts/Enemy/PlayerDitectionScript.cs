@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using GenerallStuff;
+using PlayerStats;
 
 namespace ENEMYDECTECTION
 {
@@ -23,7 +24,7 @@ namespace ENEMYDECTECTION
 
         private void Update()
         {
-            if (EnemyMovementScript != null && EnemyMovementScript != null)
+            if (EnemyMovementScript != null && EnemyMovementScript != null && !EnemyValuesScript.PlayerGameObject.GetComponent<PlayerValueStats>().GameOver )
 
                 if (Vector2.Distance(EnemyValuesScript.PlayerGameObject.transform.position, transform.position) <= EnemyValuesScript.DetectionRangeFromPlayer)
                 {

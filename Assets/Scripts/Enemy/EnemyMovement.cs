@@ -14,7 +14,7 @@ public class EnemyMovement : MonoBehaviour
 
     private void Update()
     {
-        if (EnemyValuesScript != null && EnemyValuesScript.PlayerDitected && EnemyValuesScript.PlayerGameObject.GetComponent<PlayerValueStats>().GameOver != true)
+        if (EnemyValuesScript != null && EnemyValuesScript.PlayerDitected && !EnemyValuesScript.PlayerGameObject.GetComponent<PlayerValueStats>().GameOver)
         {
             MoveEnemy();
         }
