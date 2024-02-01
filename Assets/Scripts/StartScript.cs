@@ -26,6 +26,8 @@ namespace GenerallStuff
 
         private void Start()
         {
+
+
             PlayerHPScript.SetUp();
             PlayerUIScript.GenerateTextMeshDictanry();
             FloorGenerationScript.Generate();

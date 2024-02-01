@@ -6,11 +6,15 @@ using UnityEngine.SceneManagement;
 public class ResetGame : MonoBehaviour
 {
     [Header("SCENE SETTINGS")]
-    public int loadedSceneIndex;
-
+    public int PlayAgainSceneIndex;
+    public int GoBackToMenuSceneIndex;
 
    public void ResetSceen()
    {
-        SceneManager.LoadScene(loadedSceneIndex);
+        SceneManager.LoadScene(PlayAgainSceneIndex);
    }
+    public void MenuSceen()
+    {
+        SceneManager.LoadScene(GoBackToMenuSceneIndex);
+    }
 }
