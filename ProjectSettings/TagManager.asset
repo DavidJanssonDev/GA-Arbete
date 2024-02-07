@@ -24,9 +24,9 @@ TagManager:
   - UI
   - Player
   - Enemies
-  - 
-  - Room
   - Wall
+  - Room
+  - 
   - Respawns
   - Ground
   - 
