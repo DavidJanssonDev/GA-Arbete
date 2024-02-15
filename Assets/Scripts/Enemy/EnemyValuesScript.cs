@@ -9,16 +9,13 @@ public class EnemyValuesScript : MonoBehaviour
 
     [Header("Detection Varaible")]
     // SETTINGS ON DETECTION FOR THE ENEMY 
-    public float DetectionRangeFromPlayer;
-    public float DetectionDelay;
-    // DETCTION VARIABLES
-    public bool PlayerDitected = false;
-    public bool DetectionEnabled = false;
-    public bool EnemyDetectionEnabel = true;
-    public Transform LastKnownPosition;
+    public float DetectionRange;
+
+
+
     
     public PlayerValueStats PlayerStats;
-    public Transform PlayerGameObject;
+    public Transform PlayerTransform;
 
 
 

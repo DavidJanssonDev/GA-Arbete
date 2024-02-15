@@ -53,13 +53,13 @@ public class Bullet_script : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
 
         GameObject collidedObject = collision.gameObject;
+        Debug.Log(collidedObject);
         if (collidedObject.layer == (int)LayerStuff.LayerEnum.ENEMY)
         {
             EnemyValuesScript EnemyStats = collidedObject.GetComponent<EnemyValuesScript>();

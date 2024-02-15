@@ -19,10 +19,10 @@ public class PlayerHP : MonoBehaviour
 
 
     private void OnCollisionEnter2D(Collision2D collision)
-    {
+    { 
         if (collision.gameObject.layer == (int)LayerStuff.LayerEnum.ENEMY)
         {
-            Debug.Log("Damaged by Enemy");
+            Debug.Log("PLAYER DAMAGE");
             PlayerValueStats.Health -= collision.gameObject.GetComponent<EnemyValuesScript>().Damage;
             PlayerUIScript.UpdateUI("Health", PlayerValueStats.Health);
         }

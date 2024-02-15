@@ -14,11 +14,7 @@ public class HitSci : MonoBehaviour
     private float _Timer;
 
 
-    private void Awake()
-    {
-        _SpriteRenderer = GetComponent<SpriteRenderer>();
-        _EnemyStats = transform.parent.GetComponent<EnemyValuesScript>();
-    }
+   
 
 
     void Start()
@@ -36,20 +32,6 @@ public class HitSci : MonoBehaviour
 
     void Update()
     {
-        if (_EnemyStats.isHit)
-        {
-            _Timer += Time.deltaTime;
-
-            // Lerp the color from original to hitColor over hitDuration
-            _SpriteRenderer.color = Color.Lerp(_OriginalColor, HitColor, _Timer / HitDuration);
-
-            if (_Timer >= HitDuration)
-            {
-                // Hit effect is over, reset variables
-                _EnemyStats.isHit = false;
-                _SpriteRenderer.color = _OriginalColor;
-                _Timer = 0f;
-            }
-        }
+        
     }
 }

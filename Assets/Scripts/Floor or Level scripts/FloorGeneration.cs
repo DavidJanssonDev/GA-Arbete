@@ -13,7 +13,7 @@ namespace GenerationOfFloorClassStuff
         public static FloorValueScript floorValueScript;
 
         [Header("Map Room Sprite Stuff")]
-        [SerializeField] private Tile roomDoorTile;
+       
 
         [SerializeField] private Tilemap MainWallTilemap;
         [SerializeField] private Tilemap MainGroundTilemap;
@@ -27,7 +27,7 @@ namespace GenerationOfFloorClassStuff
         public void Generate()
         {
             // Import room objects and copy their tilemaps to the main tilemap
-            RoomRelatedStuff(roomDoorTile);
+            RoomRelatedStuff();
             CopyRoomTilemapsToMainTilemap();
         }
 
@@ -44,14 +44,14 @@ namespace GenerationOfFloorClassStuff
             }
         }
 
-        private void RoomRelatedStuff(Tile roomDoorTile)
+        private void RoomRelatedStuff()
         {
             for (int roomChildObjectIndex = 0; roomChildObjectIndex < transform.childCount; roomChildObjectIndex++)
             {
                 Transform gameChild = transform.GetChild(roomChildObjectIndex);
                 if (gameChild.gameObject.layer == (int)LayerStuff.LayerEnum.Room)
                 {
-                    ImportRoomObjects(roomDoorTile, gameChild);
+                    ImportRoomObjects(gameChild);
                     DecabelAllRoomObjets(gameChild);
                 }
             }
@@ -65,17 +65,17 @@ namespace GenerationOfFloorClassStuff
 
 
         // Import room objects and generate Room objects for each room
-        private void ImportRoomObjects(Tile doorTile, Transform gameChild)
+        private void ImportRoomObjects(Transform gameChild)
         {
-            floorValueScript.RoomList.Add(GenerateRoom(gameChild, true, doorTile));
+            floorValueScript.RoomList.Add(GenerateRoom(gameChild, true));
         }
 
 
         // Generate a Room object
-        private Room GenerateRoom(Transform gameChild, bool canIncludeEnemy, Tile doorTile) 
+        private Room GenerateRoom(Transform gameChild, bool canIncludeEnemy) 
         {
             // Generate the Room
-            return new Room(gameChild.name, gameChild, canIncludeEnemy, doorTile);
+            return new Room(gameChild.name, gameChild, canIncludeEnemy);
         }
 
     }
@@ -89,31 +89,19 @@ namespace RoomStuff
         public string Name;
         public bool CanContainEnemies;
         public Transform RoomTransform;
-        
         private readonly List<Tilemap> RoomTilemaps;
 
-        public Tile DoorTile;
 
-
-
-        public List<Room> ClosestRooms;
-        public List<Room> RoomObjectClosestRooms;
-        public List<float> ValueClosestRooms;
-
-        public int AvailableDoors;
 
         // Constructor to initialize room properties
-        public Room(string name, Transform transform, bool canContainEnemies, Tile doorSprite)
+        public Room(string name, Transform transform, bool canContainEnemies)
         {
             Name = name;
-            DoorTile = doorSprite;
+
             RoomTransform = transform;
             CanContainEnemies = canContainEnemies;
-            AvailableDoors = 0;
 
             RoomTilemaps = new List<Tilemap>();
-            RoomObjectClosestRooms = new List<Room>();
-            ValueClosestRooms = new List<float>();
 
 
             SetTilemaps();
@@ -133,81 +121,23 @@ namespace RoomStuff
             }
         }
 
-        // Method to get the distance to another room
-        public float GetDistanceToRoom(Transform targetPoint)
-        {
-
-            return Vector3.Distance(RoomTransform.position, targetPoint.position);
-        }
-
-
-        // Methods to generate and sort data about closest rooms
-        public void GenerateSoritingRoomData()
-        {
-            GenerateData();
-            SortListOfClosestRoom();
-        }
-
-        public void GenerateData()
-        {
-            foreach (var room in FloorGeneration.floorValueScript.RoomList)
-            {
-                ValueClosestRooms.Add(GetDistanceToRoom(room.RoomTransform));
-                RoomObjectClosestRooms.Add(room);
-            }
-        }
-
-        public void SortListOfClosestRoom()
-        {
-            List<KeyValuePair<Room, float>> roomDistances = new List<KeyValuePair<Room, float>>();
-
-            for (int i = 0; i < FloorGeneration.floorValueScript.RoomList.Count; i++)
-            {
-                Room otherRoom = FloorGeneration.floorValueScript.RoomList[i];
-                float distance = GetDistanceToRoom(otherRoom.RoomTransform);
-                roomDistances.Add(new KeyValuePair<Room, float>(otherRoom, distance));
-            }
-
-            roomDistances.Sort((a, b) => a.Value.CompareTo(b.Value));
-
-            ClosestRooms.Clear();
-
-            foreach (var pair in roomDistances)
-            {
-                ClosestRooms.Add(pair.Key);
-            }
-        }
-
-
         // Method to copy the tilemap of the room to the main tilemap
         public void CopyTileMap(Tilemap mainWallTilemap, Tilemap mainGroundTilemap)
         {
             Tilemap WallTilemap = null;
             Tilemap GroundTilemap = null;
-            Tilemap RespawnTilemap = null;
+
 
             foreach (Tilemap tilemapChild in RoomTilemaps)
             {
-                int layerValue = tilemapChild.gameObject.layer;
-
-                if (layerValue == (int)LayerStuff.LayerEnum.Ground)
+                if (tilemapChild.gameObject.layer == (int)LayerStuff.LayerEnum.Ground)
                 {
                     GroundTilemap = tilemapChild;
                 }
-                else if (layerValue == (int)LayerStuff.LayerEnum.Wall)
+                else if (tilemapChild.gameObject.layer == (int)LayerStuff.LayerEnum.Wall)
                 {
                     WallTilemap = tilemapChild;
                 }
-                else if (layerValue == (int)LayerStuff.LayerEnum.Respawn)
-                {
-                    RespawnTilemap = tilemapChild;
-                }
-            }
-
-          
-            if (RespawnTilemap != null)
-            {
-                TilemapScript.CopyTileMapToTilemap(GroundTilemap, RespawnTilemap);
             }
 
             if (GroundTilemap != null && mainGroundTilemap != null)
@@ -225,6 +155,8 @@ namespace RoomStuff
             }
             else
             {
+                Debug.Log(WallTilemap);
+                Debug.Log(mainWallTilemap);
                 Debug.LogError("WallTilemap or mainWallTilemap is null.");
             }
         }
