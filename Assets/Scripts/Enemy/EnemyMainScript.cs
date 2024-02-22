@@ -13,7 +13,9 @@ public class EnemyMainScript : MonoBehaviour
 
     public Color HitColor; // Color to change to when hit
     public float HitDuration = 0.2f; // Duration of the hit effect in seconds
-   
+
+
+    public bool EnemyDitectionIsOn = false;
     private Color OriginalColor;
     private float Timer;
 
@@ -36,9 +38,11 @@ public class EnemyMainScript : MonoBehaviour
        {
             if (!IsGameOver())
             {
-                Vector3 target = PlayerDitection();        
-                Debug.Log($"Target Pos:  {target}");
-                //PlayerMovemnt(target);
+                if(EnemyDitectionIsOn)
+                {
+                    Vector3 target = PlayerDitection();
+                    PlayerMovemnt(target);
+                }
                 
             }
 
@@ -70,24 +74,30 @@ public class EnemyMainScript : MonoBehaviour
     {
         Transform player = EnemyValues.PlayerTransform;
 
-        if (Vector2.Distance(transform.position, player.position) <= EnemyValues.DetectionRange)
+        if (!(Vector2.Distance(transform.position, player.position) <= EnemyValues.DetectionRange))
         {
-            Vector2 direction = player.position - transform.position;
-
-            // Create a layer mask that excludes the "Enemies" layer
-            int layerMask = ~(1 << LayerMask.NameToLayer("Enemies"));
-
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, EnemyValues.DetectionRange, layerMask);
-            if (hit.collider != null)
-            {
-                if (hit.collider.gameObject.CompareTag("Player"))
-                {
-                    return player.position;
-                }
-            }      
+            return transform.position;
         }
+       
         
+        Debug.Log("Player in Range");
+        Vector2 direction = player.position - transform.position;
+
+        // Create a layer mask that excludes the "Enemies" layer
+        int layerMask = ~(1 << LayerMask.NameToLayer("Enemies"));
+
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, EnemyValues.DetectionRange, layerMask);
+        if (hit.collider != null)
+        {
+            if (hit.collider.gameObject.CompareTag("Player"))
+            {
+                return player.position;
+            }
+        }
+
         return transform.position;
+      
+
         
 
     }

@@ -43,6 +43,6 @@ public class PlayerController : MonoBehaviour
    
     private void Update()
     {
-        PlayerMousePosition = MainCamera.ScreenToWorldPoint(new Vector3(RawPlayerMousePosition.x, RawPlayerMousePosition.y, MainCamera.transform.position.y));
+        PlayerMousePosition = MainCamera.ScreenToWorldPoint(new Vector3(RawPlayerMousePosition.x, RawPlayerMousePosition.y,Mathf.Abs(MainCamera.transform.position.z)));
     }
 }

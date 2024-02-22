@@ -5,25 +5,25 @@ using UnityEngine;
 
 public class GameOverScript : MonoBehaviour
 {
-    private PlayerValueStats _PlayerValueStats;
+    private PlayerValueStats PlayerValueStats;
     public GameObject GameOverObject;
 
     private void Awake()
     {
-        _PlayerValueStats = GetComponent<PlayerValueStats>();
+        PlayerValueStats = GetComponent<PlayerValueStats>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (_PlayerValueStats.Health <= 0)
+        if (PlayerValueStats.Health <= 0)
         {
-            _PlayerValueStats.GameOver = true;
+            PlayerValueStats.GameOver = true;
             GameOverObject.SetActive(true);
         }
         else
         { 
-            _PlayerValueStats.GameOver = false;
+            PlayerValueStats.GameOver = false;
             GameOverObject.SetActive(false);
         }
     }

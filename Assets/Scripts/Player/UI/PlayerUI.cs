@@ -4,7 +4,6 @@ using GenerallStuff;
 using UnityEngine;
 using TMPro;
 using PlayerStats;
-using static GenerallStuff.LayerStuff;
 
 
 namespace UIStuff
@@ -16,10 +15,11 @@ namespace UIStuff
         public Dictionary<string, TextMeshProUGUI> TextObjectDictanry = new();
 
 
+        
+
         public void GenerateTextMeshDictanry()
         {
-            PlayerStatsScript = GetComponent<PlayerValueStats>();
-
+            PlayerStatsScript = GetComponent<StartScript>().PlayerObject.GetComponent<PlayerValueStats>();
 
             List<string> keyList = new();
 
