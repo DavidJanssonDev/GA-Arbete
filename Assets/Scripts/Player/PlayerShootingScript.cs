@@ -7,36 +7,27 @@ public class PlayerShootingScript : MonoBehaviour
 {
     public Vector3 mousePos;
     private PlayerController PlayerControllerScript;
+    [SerializeField] private Transform Player;
 
     private void Awake()
     {
-        PlayerControllerScript = transform.parent.GetComponent<PlayerController>();
-      
+        PlayerControllerScript = Player.GetComponent<PlayerController>(); 
     }
-
-
 
     private void Update()
     {
+
         mousePos = PlayerControllerScript.PlayerMousePosition;
-        Debug.Log($"parent Transform : {transform.parent.position} | GameObject: {transform.parent.gameObject}");
+        float angle = Mathf.Rad2Deg * (Mathf.Atan2(mousePos.y - Player.position.y, mousePos.x - Player.position.x));
 
+        transform.rotation = Quaternion.Euler(0,0,angle); 
+        
 
+        
+         Debug.Log($"Angel: {angle} Mathf.Atan2");
 
-        float diffX = mousePos.x - transform.parent.position.x;
-        float diffY = mousePos.y - transform.parent.position.y;
+        //Debug.Log($"Angel: {Vector3.Angle(Player.position, mousePos)} Vector3.Angle");
 
-        Debug.Log($"DiffX : {diffX} | DiffY : {diffY} ");
-
-        float angle = Mathf.Atan2(diffY, diffX) * Mathf.Rad2Deg;
-
-        Debug.Log(angle);
-
-        transform.rotation = Quaternion.Euler(0f, 0f, angle);
-
-        Debug.Log(Vector3.Angle(transform.parent.position, mousePos));
-
-          
 
     }
 

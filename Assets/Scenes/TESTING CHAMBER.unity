@@ -755,6 +755,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mousePos: {x: 0, y: 0, z: 0}
+  Player: {fileID: 1507814573}
 --- !u!212 &264292611
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -795,7 +796,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 0b255a92c89f39945882eaa90e978317, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -11215,6 +11216,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerMousePosition: {x: 0, y: 0, z: 0}
+  RawPlayerMousePosition: {x: 0, y: 0}
   RawPlayerMovementControlls: {x: 0, y: 0}
   PlayerFired: 0
 --- !u!114 &1507814570

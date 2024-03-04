@@ -7,10 +7,14 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     private Camera MainCamera;
-    private Vector2 RawPlayerMousePosition;
     private PlayerValueStats PlayerValueScript;
 
+
+    [Header("PLAYER MOUSE")]
     public Vector3 PlayerMousePosition;
+    [SerializeField] private Vector2 RawPlayerMousePosition;
+
+    [Header("PLAYER MOVEMENT")]
     public Vector2 RawPlayerMovementControlls;
     public bool PlayerFired;
 
@@ -43,6 +47,6 @@ public class PlayerController : MonoBehaviour
    
     private void Update()
     {
-        PlayerMousePosition = MainCamera.ScreenToWorldPoint(new Vector3(RawPlayerMousePosition.x, RawPlayerMousePosition.y,Mathf.Abs(MainCamera.transform.position.z)));
+        PlayerMousePosition = MainCamera.ScreenToWorldPoint(new(RawPlayerMousePosition.x, RawPlayerMousePosition.y, 20f));
     }
 }
