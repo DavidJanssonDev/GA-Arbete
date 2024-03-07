@@ -12,8 +12,10 @@ public class PlayerHP : MonoBehaviour
 
     public void SetUp()
     {
-        PlayerValueStats = GetComponent<PlayerValueStats>();
-        PlayerUIScript = GetComponent<PlayerUI>();
+        PlayerValueStats = transform.GetComponent<PlayerValueStats>();
+        PlayerUIScript = GameObject.FindGameObjectWithTag("Start Object").GetComponent<PlayerUI>();
+        
+
     }
 
 

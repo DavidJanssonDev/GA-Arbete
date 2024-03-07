@@ -15,6 +15,7 @@ TagManager:
   - Player Health
   - Player Damage
   - Respawn tilemap
+  - Start Object
   layers:
   - Default
   - TransparentFX

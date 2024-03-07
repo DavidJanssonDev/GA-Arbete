@@ -10,6 +10,8 @@ public class EnemyMainScript : MonoBehaviour
     private EnemyValuesScript EnemyValues;
     private SpriteRenderer EnemySpriteRenderer;
 
+    private Vector3 LastKnowPosistion;
+
 
     public Color HitColor; // Color to change to when hit
     public float HitDuration = 0.2f; // Duration of the hit effect in seconds
@@ -26,24 +28,28 @@ public class EnemyMainScript : MonoBehaviour
         EnemyValues = GetComponent<EnemyValuesScript>();
         EnemySpriteRenderer = GetComponent<SpriteRenderer>();
         EnemyValues.PlayerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        Debug.Log(EnemyValues.PlayerTransform);
+
         EnemyValues.PlayerStats = EnemyValues.PlayerTransform.GetComponent<PlayerValueStats>();
 
 
         OriginalColor = EnemySpriteRenderer.color;
+        LastKnowPosistion = transform.position;
     }
 
     void Update()
     {
-       if (EnemyValues != null && EnemyValues.PlayerTransform != null && EnemyValues.PlayerStats != null)
-       {
+        if (EnemyValues != null && EnemyValues.PlayerTransform != null && EnemyValues.PlayerStats != null)
+        {
             if (!IsGameOver())
             {
-                if(EnemyDitectionIsOn)
+                if (EnemyDitectionIsOn)
                 {
                     Vector3 target = PlayerDitection();
+                    Debug.Log(target);
                     PlayerMovemnt(target);
                 }
-                
+
             }
 
             if (EnemyValues.isHit)
@@ -76,12 +82,13 @@ public class EnemyMainScript : MonoBehaviour
 
         if (!(Vector2.Distance(transform.position, player.position) <= EnemyValues.DetectionRange))
         {
-            return transform.position;
+            return LastKnowPosistion;
         }
-       
-        
+
+
         Debug.Log("Player in Range");
         Vector2 direction = player.position - transform.position;
+
 
         // Create a layer mask that excludes the "Enemies" layer
         int layerMask = ~(1 << LayerMask.NameToLayer("Enemies"));
@@ -89,22 +96,23 @@ public class EnemyMainScript : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, EnemyValues.DetectionRange, layerMask);
         if (hit.collider != null)
         {
-            if (hit.collider.gameObject.CompareTag("Player"))
+            if (hit.collider.gameObject.layer == (int)LayerStuff.LayerEnum.PLAYER)
             {
+                Debug.Log("Player FIND");
+                LastKnowPosistion = player.position;
                 return player.position;
             }
         }
 
-        return transform.position;
-      
+        return LastKnowPosistion;
 
-        
 
     }
 
     private void PlayerMovemnt(Vector3 tagetPosition)
     {
-        transform.position = Vector3.MoveTowards(transform.position, tagetPosition, EnemyValues.MovmentSpeed * Time.deltaTime);
+        Debug.Log("ENEMY VOING");
+        transform.position = Vector3.MoveTowards(transform.position, new Vector3(tagetPosition.x, tagetPosition.y, 20), EnemyValues.MovmentSpeed * Time.deltaTime);
     }
 
 

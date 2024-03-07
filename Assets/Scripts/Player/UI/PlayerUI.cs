@@ -10,16 +10,22 @@ namespace UIStuff
 {
     public class PlayerUI : MonoBehaviour
     {
-        private PlayerValueStats PlayerStatsScript; 
+        private PlayerValueStats PlayerStatsScript;
+        private StartScript SetUpScript;
         public List<Transform> TextObjectList = new();
         public Dictionary<string, TextMeshProUGUI> TextObjectDictanry = new();
 
 
-        
+        private void Awake()
+        {
+            SetUpScript = transform.GetComponent<StartScript>();
+            PlayerStatsScript = SetUpScript.PlayerObject.GetComponent<PlayerValueStats>();
+        }
 
         public void GenerateTextMeshDictanry()
         {
-            PlayerStatsScript = GetComponent<StartScript>().PlayerObject.GetComponent<PlayerValueStats>();
+            Debug.Log("BEGAIN GENENERATION");
+            
 
             List<string> keyList = new();
 
@@ -53,7 +59,9 @@ namespace UIStuff
 
         public void UpdateUI(string TypeOfUI, object newStat)
         {
+            Debug.Log("UI BEGIN UPDATE");
             TextMeshProUGUI TextUI = TextObjectDictanry[TypeOfUI];
+            Debug.Log(TextUI);
             TextUI.text = $"{TypeOfUI}: {newStat}";
         }
     }

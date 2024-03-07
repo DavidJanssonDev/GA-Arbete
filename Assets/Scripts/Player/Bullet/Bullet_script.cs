@@ -32,18 +32,17 @@ public class Bullet_script : MonoBehaviour
         Rb = GetComponent<Rigidbody2D>();
 
         MousePos = PlayerControllerScript.PlayerMousePosition;
-        Vector3 Direction = MousePos - PlayerObject.transform.position;
-        Vector3 Rotation = transform.position - MousePos;
+        Vector3 Direction = MousePos - transform.parent.position;
 
 
         RbVelocity = new Vector2(Direction.x, Direction.y).normalized * BulletSpeed;
-        RotBullet = Mathf.Atan2(Rotation.y, Rotation.x) * Mathf.Rad2Deg;
+     
     }
 
     private void Start()
     {
         Rb.velocity = RbVelocity;
-        transform.rotation = Quaternion.Euler(0, 0, RotBullet);
+        transform.rotation = transform.parent.rotation;
     }
 
     private void Update()
@@ -71,6 +70,10 @@ public class Bullet_script : MonoBehaviour
                 Destroy(collidedObject);
             }
 
+            Destroy(gameObject);
+        } 
+        else if (collidedObject.layer == (int) LayerStuff.LayerEnum.Wall)
+        {
             Destroy(gameObject);
         }
     }

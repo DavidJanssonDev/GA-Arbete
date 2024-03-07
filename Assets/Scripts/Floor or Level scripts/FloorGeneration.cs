@@ -161,45 +161,45 @@ namespace RoomStuff
             }
         }
 
+    }
 
+    // Class containing static methods related to Tilemap
+    public class TilemapScript
+    {
 
-        // Class containing static methods related to Tilemap
-        public class TilemapScript
+        // Method to copy the contents of one tilemap to another
+        public static void CopyTileMapToTilemap(Tilemap tilemapToCopyTo, Tilemap orgTilemap)
         {
+            var tilemapPos = orgTilemap.transform.position;
+            var bounds = orgTilemap.cellBounds;
 
-            // Method to copy the contents of one tilemap to another
-            public static void CopyTileMapToTilemap(Tilemap tilemapToCopyTo, Tilemap orgTilemap)
+            for (int tileX = bounds.x; tileX < bounds.x + bounds.size.x; tileX++)
             {
-                var tilemapPos = orgTilemap.transform.position;
-                var bounds = orgTilemap.cellBounds;
-
-                for (int tileX = bounds.x; tileX < bounds.x + bounds.size.x; tileX++)
+                for (int tileY = bounds.y; tileY < bounds.y + bounds.size.y; tileY++)
                 {
-                    for (int tileY = bounds.y; tileY < bounds.y + bounds.size.y; tileY++)
-                    {
-                        var cellPosition = new Vector3Int(tileX, tileY, 0);
-                        var sourceTile = orgTilemap.GetTile(cellPosition);
+                    var cellPosition = new Vector3Int(tileX, tileY, 0);
+                    var sourceTile = orgTilemap.GetTile(cellPosition);
 
-                        if (sourceTile != null)
-                        {
-                            tilemapToCopyTo.SetTile(new Vector3Int(
-                                        Mathf.FloorToInt(tilemapPos.x) + cellPosition.x,
-                                        Mathf.FloorToInt(tilemapPos.y) + cellPosition.y,
-                                        Mathf.FloorToInt(tilemapPos.z) + cellPosition.z)
-                                , sourceTile);
-                        }
+                    if (sourceTile != null)
+                    {
+                        tilemapToCopyTo.SetTile(new Vector3Int(
+                                    Mathf.FloorToInt(tilemapPos.x) + cellPosition.x,
+                                    Mathf.FloorToInt(tilemapPos.y) + cellPosition.y,
+                                    Mathf.FloorToInt(tilemapPos.z) + cellPosition.z)
+                            , sourceTile);
                     }
                 }
             }
-
-
-            // Method to replace a tile in a tilemap
-            public static void ReplaceTile(Vector3Int cellPosition, Tile replacementTile, Tilemap tilemap)
-            {
-                tilemap.SetTile(cellPosition, replacementTile);
-                tilemap.RefreshTile(cellPosition);
-            }
         }
+
+
+        // Method to replace a tile in a tilemap
+        public static void ReplaceTile(Vector3Int cellPosition, Tile replacementTile, Tilemap tilemap)
+        {
+            tilemap.SetTile(cellPosition, replacementTile);
+            tilemap.RefreshTile(cellPosition);
+        }
+        
     }
 }
 

@@ -21,19 +21,23 @@ namespace GenerallStuff
 
         private void Awake()
         {
-            PlayerUIScript = GetComponent<PlayerUI>();
+            PlayerUIScript = transform.GetComponent<PlayerUI>();
             FloorGenerationScript = GameMapObject.GetComponent<FloorGeneration>();
             PlayerHPScript = PlayerObject.GetComponent<PlayerHP>();
         }
 
         private void Start()
         {
-
+            if (PlayerUIScript == null)
+            {
+                Debug.LogError("PlayerUIScript is not assigned!");
+                return;
+            }
 
             PlayerHPScript.SetUp();
+            Debug.Log("GENERATING UI SCRIPT ");
             PlayerUIScript.GenerateTextMeshDictanry();
             FloorGenerationScript.Generate();
-            
         }
 
     }
