@@ -666,7 +666,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7845185586259944811, guid: 424609e247fe8d44f97fb0af2660d497, type: 3}
       propertyPath: MovmentSpeed
-      value: 0
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7845185586259944811, guid: 424609e247fe8d44f97fb0af2660d497, type: 3}
       propertyPath: DetectionRange
